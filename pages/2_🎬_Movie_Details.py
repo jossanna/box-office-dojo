@@ -2,8 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
-from Main import load_movies, load_bo
-from Main import get_col_configs
+from Main import load_movies, load_bo, get_col_configs, get_auto_height
 
 st.set_page_config(page_title='Movie Details', page_icon='🎬', layout="wide", initial_sidebar_state="auto", menu_items=None)
 
@@ -65,7 +64,7 @@ if len(movie_selection) == 0:
 else:
   st.subheader('Exploring ' + movie_selection)
 
-  st.dataframe(width=None, data=_df, hide_index=True, column_config=config_cols, use_container_width=True, height=(_df.shape[0] + 1) * 35 + 3)
+  st.dataframe(width=None, data=_df, hide_index=True, column_config=config_cols, use_container_width=True, height=get_auto_height(_df))
 
 
   def format_pct(value):

@@ -76,9 +76,6 @@ def get_col_configs():
 
 
 
-
-
-
-
 def get_auto_height(df):
     auto_height = (df.shape[0] + 1) * 35 + 3
+    return auto_height

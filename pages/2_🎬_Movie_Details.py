@@ -2,7 +2,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
-from Main import load_movies, load_bo, get_col_configs
+from Main import load_movies, load_bo
+from Main import get_col_configs
 
 st.set_page_config(page_title='Movie Details', page_icon='🎬', layout="wide", initial_sidebar_state="auto", menu_items=None)
 

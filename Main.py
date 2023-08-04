@@ -22,7 +22,8 @@ movies = load_movies()
 
 @st.cache_data
 def load_bo():
-    bo = pd.read_pickle('processed_data/bo.pkl.gz', parse_dates=['date'])
+    bo = pd.read_pickle('processed_data/bo.pkl.gz')
+    bo['date'] = pd.to_datetime(bo['date'])
     # Perform any necessary preprocessing
     return bo
 

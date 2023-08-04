@@ -1,0 +1,4 @@
+,id,date,rank,gross,pct_change,theaters,per_theater,total_gross,kind,kind_num,pct_lw
+0,https://www.the-numbers.com/movie/Casablanca,"Apr 10, 1992",13,"$181,494", ,11,"$16,499","  $4,931,494",weekend,"2,569",
+0,https://www.the-numbers.com/movie/Casablanca,"Apr 10, 1992",11,"$305,965", ,11,"$27,815","  $5,055,965",daily,"2,569",
+0,https://www.the-numbers.com/movie/Casablanca,"Apr 10, 1992",11,"$305,965", ,11,"$27,815","  $5,055,965",weekly,"2,569",

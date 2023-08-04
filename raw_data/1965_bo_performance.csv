@@ -1,0 +1,5 @@
+,id,date,rank,gross,pct_change,theaters,per_theater,total_gross,kind,kind_num,pct_lw
+0,https://www.the-numbers.com/movie/Doctor-Zhivago,"Apr 7, 1995",40,"$87,086", ,17,"$5,123","  $111,808,999",weekend,"1,529",
+1,https://www.the-numbers.com/movie/Doctor-Zhivago,"Apr 14, 1995",47,"$55,214",-37%,15,"$3,681","  $111,897,830",weekend,"1,530",
+0,https://www.the-numbers.com/movie/Doctor-Zhivago,"Apr 7, 1995",39,"$120,703", ,17,"$7,100","  $111,842,616",daily,"1,530",
+0,https://www.the-numbers.com/movie/Doctor-Zhivago,"Apr 7, 1995",39,"$120,703", ,17,"$7,100","  $111,842,616",weekly,"1,530",

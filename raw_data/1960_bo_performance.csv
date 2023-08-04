@@ -1,0 +1,11 @@
+,id,date,rank,gross,pct_change,theaters,per_theater,total_gross,kind,kind_num,pct_lw
+0,https://www.the-numbers.com/movie/Spartacus,"May 3, 1991",21,"$279,893", ,41,"$6,827","  $426,846",weekend,"1,596",
+1,https://www.the-numbers.com/movie/Spartacus,"May 10, 1991",22,"$256,873",-8%,52,"$4,940","  $800,898",weekend,"1,597",
+2,https://www.the-numbers.com/movie/Spartacus,"May 17, 1991",25,"$211,905",-18%,51,"$4,155","  $1,126,180",weekend,"1,598",
+3,https://www.the-numbers.com/movie/Spartacus,"May 24, 1991",36,"$133,954",-37%,33,"$4,059","  $1,346,473",weekend,"1,599",
+0,https://www.the-numbers.com/movie/Spartacus,"May 3, 1991",18,"$397,072", ,41,"$9,685","  $544,025",daily,"1,596",
+1,https://www.the-numbers.com/movie/Spartacus,"May 10, 1991",20,"$370,250",-7%,52,"$7,120","  $914,275",daily,"1,597",
+2,https://www.the-numbers.com/movie/Spartacus,"May 17, 1991",25,"$298,244",-19%,51,"$5,848","  $1,212,519",daily,"1,598",
+0,https://www.the-numbers.com/movie/Spartacus,"May 3, 1991",18,"$397,072", ,41,"$9,685","  $544,025",weekly,"1,596",
+1,https://www.the-numbers.com/movie/Spartacus,"May 10, 1991",20,"$370,250",-7%,52,"$7,120","  $914,275",weekly,"1,597",
+2,https://www.the-numbers.com/movie/Spartacus,"May 17, 1991",25,"$298,244",-19%,51,"$5,848","  $1,212,519",weekly,"1,598",

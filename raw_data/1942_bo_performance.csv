@@ -1,0 +1,12 @@
+,id,date,rank,gross,pct_change,theaters,per_theater,total_gross,kind,kind_num,pct_lw
+0,https://www.the-numbers.com/movie/Bambi-(1942),"Jun 25, 1982",10,"$2,096,384", ,508,"$4,127","  $2,096,384",weekend,"2,081",
+1,https://www.the-numbers.com/movie/Bambi-(1942),"Jul 2, 1982",9,"$1,890,361",-10%,750,"$2,520","  $5,723,384",weekend,"2,082",
+2,https://www.the-numbers.com/movie/Bambi-(1942),"Jul 15, 1988",4,"$7,216,741", ,"1,483","$4,866","  $7,216,741",weekend,"2,397",
+3,https://www.the-numbers.com/movie/Bambi-(1942),"Jul 22, 1988",6,"$5,315,853",-26%,"1,489","$3,570","  $18,348,182",weekend,"2,398",
+4,https://www.the-numbers.com/movie/Bambi-(1942),"Jul 29, 1988",7,"$3,201,752",-40%,"1,477","$2,168","  $24,960,324",weekend,"2,399",
+0,https://www.the-numbers.com/movie/Bambi-(1942),"Jun 25, 1982",9,"$3,833,023", ,508,"$7,545","  $3,833,023",daily,"2,082",
+1,https://www.the-numbers.com/movie/Bambi-(1942),"Jul 15, 1988",4,"$13,032,329", ,"1,483","$8,788","  $13,032,329",daily,"2,398",
+2,https://www.the-numbers.com/movie/Bambi-(1942),"Jul 22, 1988",4,"$8,726,243",-33%,"1,489","$5,860","  $21,758,572",daily,"2,399",
+0,https://www.the-numbers.com/movie/Bambi-(1942),"Jun 25, 1982",9,"$3,833,023", ,508,"$7,545","  $3,833,023",weekly,"2,082",
+1,https://www.the-numbers.com/movie/Bambi-(1942),"Jul 15, 1988",4,"$13,032,329", ,"1,483","$8,788","  $13,032,329",weekly,"2,398",
+2,https://www.the-numbers.com/movie/Bambi-(1942),"Jul 22, 1988",4,"$8,726,243",-33%,"1,489","$5,860","  $21,758,572",weekly,"2,399",

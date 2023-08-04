@@ -1,0 +1,11 @@
+,id,date,rank,gross,pct_change,theaters,per_theater,total_gross,kind,kind_num,pct_lw
+0,https://www.the-numbers.com/movie/Aristocats-The,"Apr 10, 1987",4,"$3,168,071", ,"1,480","$2,141","  $3,168,071",weekend,886,
+1,https://www.the-numbers.com/movie/Aristocats-The,"Apr 17, 1987",2,"$3,312,111",+5%,"1,491","$2,221","  $8,779,934",weekend,887,
+2,https://www.the-numbers.com/movie/Aristocats-The,"Apr 24, 1987",5,"$2,100,229",-37%,"1,431","$1,468","  $12,656,071",weekend,888,
+3,https://www.the-numbers.com/movie/Aristocats-The,"May 1, 1987",10,"$1,418,149",-32%,"1,405","$1,009","  $14,512,462",weekend,889,
+0,https://www.the-numbers.com/movie/Aristocats-The,"Apr 10, 1987",3,"$5,467,823", ,"1,480","$3,694","  $5,467,823",daily,886,
+1,https://www.the-numbers.com/movie/Aristocats-The,"Apr 17, 1987",2,"$5,088,019",-7%,"1,491","$3,412","  $10,555,842",daily,887,
+2,https://www.the-numbers.com/movie/Aristocats-The,"Apr 24, 1987",7,"$2,538,471",-50%,"1,431","$1,774","  $13,094,313",daily,888,
+0,https://www.the-numbers.com/movie/Aristocats-The,"Apr 10, 1987",3,"$5,467,823", ,"1,480","$3,694","  $5,467,823",weekly,886,
+1,https://www.the-numbers.com/movie/Aristocats-The,"Apr 17, 1987",2,"$5,088,019",-7%,"1,491","$3,412","  $10,555,842",weekly,887,
+2,https://www.the-numbers.com/movie/Aristocats-The,"Apr 24, 1987",7,"$2,538,471",-50%,"1,431","$1,774","  $13,094,313",weekly,888,

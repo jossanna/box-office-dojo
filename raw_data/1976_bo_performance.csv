@@ -1,0 +1,6 @@
+,id,date,rank,gross,pct_change,theaters,per_theater,total_gross,kind,kind_num,pct_lw
+0,https://www.the-numbers.com/movie/Taxi-Driver,"Feb 16, 1996",45,"$116,458", ,8,"$14,557","  $116,458",weekend,"1,046",
+1,https://www.the-numbers.com/movie/Taxi-Driver,"Mar 1, 1996",47,"$86,995", ,15,"$5,800","  $378,678",weekend,"1,048",
+0,https://www.the-numbers.com/movie/Bad-News-Bears-The-(1976),"Apr 9, 1976",1,"$2,413,779", ,443,"$5,449","  $2,608,666",weekend,1,
+0,https://www.the-numbers.com/movie/Omen-The-(1976),"Jun 25, 1976",1,"$4,273,886", ,515,"$8,299","  $4,273,886",weekend,1,
+0,https://www.the-numbers.com/movie/King-Kong-(1976),"Dec 17, 1976",1,"$7,023,921", ,974,"$7,211","  $7,023,921",weekend,1,

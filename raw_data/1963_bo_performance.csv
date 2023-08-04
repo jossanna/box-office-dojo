@@ -1,0 +1,11 @@
+,id,date,rank,gross,pct_change,theaters,per_theater,total_gross,kind,kind_num,pct_lw
+0,https://www.the-numbers.com/movie/Sword-in-the-Stone-The,"Mar 25, 1983",7,"$2,230,614", ,487,"$4,580","  $2,230,614",weekend,"1,005",
+1,https://www.the-numbers.com/movie/Sword-in-the-Stone-The,"Apr 1, 1983",8,"$1,751,997",-21%,487,"$3,598","  $5,044,210",weekend,"1,006",
+2,https://www.the-numbers.com/movie/Sword-in-the-Stone-The,"Apr 8, 1983",9,"$1,360,351",-22%,614,"$2,216","  $7,805,540",weekend,"1,007",
+3,https://www.the-numbers.com/movie/Sword-in-the-Stone-The,"Apr 15, 1983",13,"$1,005,674",-26%,614,"$1,638","  $9,131,576",weekend,"1,008",
+0,https://www.the-numbers.com/movie/Sword-in-the-Stone-The,"Mar 25, 1983",7,"$3,292,213", ,487,"$6,760","  $3,292,213",daily,"1,006",
+1,https://www.the-numbers.com/movie/Sword-in-the-Stone-The,"Apr 1, 1983",6,"$3,152,976",-4%,487,"$6,474","  $6,445,189",daily,"1,007",
+2,https://www.the-numbers.com/movie/Sword-in-the-Stone-The,"Apr 8, 1983",10,"$1,680,713",-47%,614,"$2,737","  $8,125,902",daily,"1,008",
+0,https://www.the-numbers.com/movie/Sword-in-the-Stone-The,"Mar 25, 1983",7,"$3,292,213", ,487,"$6,760","  $3,292,213",weekly,"1,006",
+1,https://www.the-numbers.com/movie/Sword-in-the-Stone-The,"Apr 1, 1983",6,"$3,152,976",-4%,487,"$6,474","  $6,445,189",weekly,"1,007",
+2,https://www.the-numbers.com/movie/Sword-in-the-Stone-The,"Apr 8, 1983",10,"$1,680,713",-47%,614,"$2,737","  $8,125,902",weekly,"1,008",

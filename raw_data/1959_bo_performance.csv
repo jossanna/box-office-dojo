@@ -1,0 +1,8 @@
+,id,date,rank,gross,pct_change,theaters,per_theater,total_gross,kind,kind_num,pct_lw
+0,https://www.the-numbers.com/movie/Sleeping-Beauty-(1959),"Mar 21, 1986",5,"$2,548,698", ,913,"$2,792","  $2,548,698",weekend,"1,417",
+1,https://www.the-numbers.com/movie/Sleeping-Beauty-(1959),"Mar 28, 1986",8,"$1,843,917",-28%,"1,159","$1,591","  $5,995,816",weekend,"1,418",
+2,https://www.the-numbers.com/movie/Sleeping-Beauty-(1959),"Apr 4, 1986",8,"$1,869,345",+1%,"1,042","$1,794","  $9,464,608",weekend,"1,419",
+0,https://www.the-numbers.com/movie/Sleeping-Beauty-(1959),"Mar 21, 1986",5,"$4,151,899", ,913,"$4,548","  $4,151,899",daily,"1,418",
+1,https://www.the-numbers.com/movie/Sleeping-Beauty-(1959),"Mar 28, 1986",5,"$3,443,364",-17%,"1,159","$2,971","  $7,595,263",daily,"1,419",
+0,https://www.the-numbers.com/movie/Sleeping-Beauty-(1959),"Mar 21, 1986",5,"$4,151,899", ,913,"$4,548","  $4,151,899",weekly,"1,418",
+1,https://www.the-numbers.com/movie/Sleeping-Beauty-(1959),"Mar 28, 1986",5,"$3,443,364",-17%,"1,159","$2,971","  $7,595,263",weekly,"1,419",

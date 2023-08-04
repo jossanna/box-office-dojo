@@ -1,0 +1,38 @@
+,id,date,rank,gross,pct_change,theaters,per_theater,total_gross,kind,kind_num,pct_lw
+0,https://www.the-numbers.com/movie/Carnal-Knowledge,"Sep 2, 2022",-,"$7,731", ,2,"$3,866","  $28,630,731",weekend,"2,697",
+1,https://www.the-numbers.com/movie/Carnal-Knowledge,"Sep 9, 2022",-,"$4,759",-38%,3,"$1,586","  $20,120",weekend,"2,698",
+2,https://www.the-numbers.com/movie/Carnal-Knowledge,"Sep 16, 2022",-,"$2,757",-42%,2,"$1,379","  $26,704",weekend,"2,699",
+3,https://www.the-numbers.com/movie/Carnal-Knowledge,"Sep 23, 2022",-,"$1,173",-57%,1,"$1,173","  $30,070",weekend,"2,700",
+4,https://www.the-numbers.com/movie/Carnal-Knowledge,"Jan 13, 2023",-,$230, ,1,$230,"  $2,863,301",weekend,"2,716",
+0,https://www.the-numbers.com/movie/Carnal-Knowledge,"Sep 2, 2022",-,"$15,361", ,2,"$7,681","  $15,361",daily,"2,697",
+1,https://www.the-numbers.com/movie/Carnal-Knowledge,"Sep 9, 2022",-,"$8,586",-44%,3,"$2,862","  $23,947",daily,"2,698",
+2,https://www.the-numbers.com/movie/Carnal-Knowledge,"Sep 16, 2022",-,"$4,950",-42%,3,"$1,650","  $28,897",daily,"2,699",
+3,https://www.the-numbers.com/movie/Carnal-Knowledge,"Sep 23, 2022",-,"$2,596",-48%,1,"$2,596","  $31,493",daily,"2,700",
+4,https://www.the-numbers.com/movie/Carnal-Knowledge,"Oct 14, 2022",44,"$1,555", ,2,$778,"  $33,048",daily,"2,703",
+0,https://www.the-numbers.com/movie/Carnal-Knowledge,"Sep 2, 2022",-,"$15,361", ,2,"$7,681","  $15,361",weekly,"2,697",
+1,https://www.the-numbers.com/movie/Carnal-Knowledge,"Sep 9, 2022",-,"$8,586",-44%,3,"$2,862","  $23,947",weekly,"2,698",
+2,https://www.the-numbers.com/movie/Carnal-Knowledge,"Sep 16, 2022",-,"$4,950",-42%,3,"$1,650","  $28,897",weekly,"2,699",
+3,https://www.the-numbers.com/movie/Carnal-Knowledge,"Sep 23, 2022",-,"$2,596",-48%,1,"$2,596","  $31,493",weekly,"2,700",
+4,https://www.the-numbers.com/movie/Carnal-Knowledge,"Oct 14, 2022",44,"$1,555", ,2,$778,"  $33,048",weekly,"2,703",
+0,https://www.the-numbers.com/movie/Fiddler-on-the-Roof,"Nov 9, 1979",1,"$1,726,942", ,456,"$3,787","  $1,777,630",weekend,463,
+0,https://www.the-numbers.com/movie/Summer-of-42,"Apr 30, 1971",1,"$4,042", ,1,"$4,042","  $4,042",weekend,1,
+1,https://www.the-numbers.com/movie/Summer-of-42,"May 7, 1971",1,"$16,001",+296%,1,"$16,001","  $30,426",weekend,2,
+2,https://www.the-numbers.com/movie/Summer-of-42,"May 14, 1971",1,"$16,039",n/c,1,"$16,039","  $56,766",weekend,3,
+0,https://www.the-numbers.com/movie/Summer-of-42,"May 2, 1971",-,"$4,042", ,1,"$4,042","  $4,042",daily,3, 
+1,https://www.the-numbers.com/movie/Summer-of-42,"May 3, 1971",-,"$2,177",-46%,1,"$2,177","  $6,219",daily,4, 
+2,https://www.the-numbers.com/movie/Summer-of-42,"May 4, 1971",-,"$2,475",+14%,1,"$2,475","  $8,694",daily,5, 
+3,https://www.the-numbers.com/movie/Summer-of-42,"May 5, 1971",-,"$3,000",+21%,1,"$3,000","  $11,694",daily,6, 
+4,https://www.the-numbers.com/movie/Summer-of-42,"May 6, 1971",-,"$2,731",-9%,1,"$2,731","  $14,425",daily,7, 
+5,https://www.the-numbers.com/movie/Summer-of-42,"May 7, 1971",-,"$4,349",+59%,1,"$4,349","  $18,774",daily,8, 
+6,https://www.the-numbers.com/movie/Summer-of-42,"May 8, 1971",-,"$6,000",+38%,1,"$6,000","  $24,774",daily,9, 
+7,https://www.the-numbers.com/movie/Summer-of-42,"May 9, 1971",-,"$5,652",-6%,1,"$5,652","  $30,426",daily,10,+40%
+8,https://www.the-numbers.com/movie/Summer-of-42,"May 10, 1971",-,"$2,256",-60%,1,"$2,256","  $32,682",daily,11,+4%
+9,https://www.the-numbers.com/movie/Summer-of-42,"May 11, 1971",-,"$3,178",+41%,1,"$3,178","  $35,860",daily,12,+28%
+10,https://www.the-numbers.com/movie/Summer-of-42,"May 12, 1971",-,"$2,501",-21%,1,"$2,501","  $38,361",daily,13,-17%
+11,https://www.the-numbers.com/movie/Summer-of-42,"May 13, 1971",-,"$2,366",-5%,1,"$2,366","  $40,727",daily,14,-13%
+12,https://www.the-numbers.com/movie/Summer-of-42,"May 14, 1971",-,"$4,128",+74%,1,"$4,128","  $44,855",daily,15,-5%
+13,https://www.the-numbers.com/movie/Summer-of-42,"May 15, 1971",-,"$5,671",+37%,1,"$5,671","  $50,526",daily,16,-5%
+14,https://www.the-numbers.com/movie/Summer-of-42,"May 16, 1971",-,"$6,240",+10%,1,"$6,240","  $56,766",daily,17,+10%
+15,https://www.the-numbers.com/movie/Summer-of-42,"May 17, 1971",-,"$2,431",-61%,1,"$2,431","  $59,197",daily,18,+8%
+0,https://www.the-numbers.com/movie/Summer-of-42,"Apr 30, 1971",1,"$14,425", ,1,"$14,425","  $14,425",weekly,1,
+1,https://www.the-numbers.com/movie/Summer-of-42,"May 7, 1971",1,"$26,302",+82%,1,"$26,302","  $40,727",weekly,2,

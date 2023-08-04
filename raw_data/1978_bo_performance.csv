@@ -1,0 +1,92 @@
+,id,date,rank,gross,pct_change,theaters,per_theater,total_gross,kind,kind_num,pct_lw
+0,https://www.the-numbers.com/movie/Betsy-The,"Feb 10, 1978",1,"$2,425,377", ,473,"$5,128","  $2,425,377",weekend,1,
+0,https://www.the-numbers.com/movie/Damien-Omen-II,"Jun 9, 1978",1,"$3,880,880", ,525,"$7,392","  $3,880,880",weekend,1,
+0,https://www.the-numbers.com/movie/Grease,"Jun 16, 1978",2,"$8,941,717", ,862,"$10,373","  $8,941,717",weekend,1,
+1,https://www.the-numbers.com/movie/Grease,"Mar 27, 1998",2,"$12,705,463", ,"2,064","$6,156","  $165,802,955",weekend,"1,033",
+2,https://www.the-numbers.com/movie/Grease,"Apr 3, 1998",4,"$5,466,763",-57%,"2,064","$2,649","  $173,230,023",weekend,"1,034",
+3,https://www.the-numbers.com/movie/Grease,"Apr 10, 1998",9,"$2,505,029",-54%,"2,031","$1,233","  $177,441,553",weekend,"1,035",
+4,https://www.the-numbers.com/movie/Grease,"Apr 17, 1998",16,"$1,228,490",-51%,"1,989",$618,"  $179,834,620",weekend,"1,036",
+5,https://www.the-numbers.com/movie/Grease,"Apr 24, 1998",24,"$478,222",-61%,"1,451",$330,"  $180,594,940",weekend,"1,037",
+6,https://www.the-numbers.com/movie/Grease,"May 1, 1998",28,"$247,480",-48%,845,$293,"  $180,956,307",weekend,"1,038",
+7,https://www.the-numbers.com/movie/Grease,"May 8, 1998",24,"$272,057",+10%,802,$339,"  $181,275,701",weekend,"1,039",
+8,https://www.the-numbers.com/movie/Grease,"May 15, 1998",37,"$82,965",-70%,406,$204,"  $181,427,748",weekend,"1,040",
+9,https://www.the-numbers.com/movie/Grease,"May 22, 1998",65,"$24,522",-70%,406,$60,"  $181,469,808",weekend,"1,041",
+10,https://www.the-numbers.com/movie/Grease,"May 29, 1998",66,"$14,837",-39%,81,$183,"  $181,489,273",weekend,"1,042",
+11,https://www.the-numbers.com/movie/Grease,"Jun 5, 1998",71,"$7,525",-49%,58,$130,"  $181,503,603",weekend,"1,043",
+12,https://www.the-numbers.com/movie/Grease,"Jul 9, 2010",38,"$60,759", ,12,"$5,063","  $181,604,279",weekend,"1,674",
+13,https://www.the-numbers.com/movie/Grease,"Jul 16, 2010",36,"$87,836",+45%,21,"$4,183","  $181,734,273",weekend,"1,675",
+14,https://www.the-numbers.com/movie/Grease,"Jul 23, 2010",43,"$32,776",-63%,17,"$1,928","  $181,768,240",weekend,"1,676",
+15,https://www.the-numbers.com/movie/Grease,"Jul 30, 2010",46,"$36,900",+13%,33,"$1,118","  $181,805,140",weekend,"1,677",
+16,https://www.the-numbers.com/movie/Grease,"Aug 6, 2010",70,"$8,630",-77%,21,$411,"  $181,813,770",weekend,"1,678",
+0,https://www.the-numbers.com/movie/Grease,"Mar 27, 1998",1,"$6,140,000", ,"2,064","$2,975","  $6,140,000",daily,"7,225", 
+1,https://www.the-numbers.com/movie/Grease,"Mar 28, 1998",2,"$4,155,000",-32%,"2,064","$2,013","  $10,295,000",daily,"7,226", 
+2,https://www.the-numbers.com/movie/Grease,"Mar 29, 1998",2,"$2,130,000",-49%,"2,064","$1,032","  $12,705,000",daily,"7,227", 
+3,https://www.the-numbers.com/movie/Grease,"Mar 30, 1998",2,"$452,973",-79%,"2,064",$219,"  $13,158,436",daily,"7,228", 
+4,https://www.the-numbers.com/movie/Grease,"Mar 31, 1998",5,"$553,179",+22%,"2,064",$268,"  $13,711,615",daily,"7,229", 
+5,https://www.the-numbers.com/movie/Grease,"Apr 1, 1998",3,"$482,350",-13%,"2,064",$234,"  $14,193,965",daily,"7,230", 
+6,https://www.the-numbers.com/movie/Grease,"Apr 2, 1998",3,"$471,803",-2%,"2,064",$229,"  $14,665,768",daily,"7,231", 
+7,https://www.the-numbers.com/movie/Grease,"Apr 3, 1998",4,"$1,745,000",+270%,"2,064",$845,"  $16,411,000",daily,"7,232",-72%
+8,https://www.the-numbers.com/movie/Grease,"Apr 4, 1998",4,"$2,545,000",+46%,"2,064","$1,233","  $18,956,000",daily,"7,233",-39%
+9,https://www.the-numbers.com/movie/Grease,"Apr 5, 1998",4,"$1,202,000",-53%,"2,054",$585,"  $20,132,531",daily,"7,234",-44%
+10,https://www.the-numbers.com/movie/Grease,"Apr 6, 1998",5,"$321,469",-73%,"2,064",$156,"  $20,454,000",daily,"7,235",-29%
+11,https://www.the-numbers.com/movie/Grease,"Apr 7, 1998",4,"$406,614",+26%,"2,064",$197,"  $20,860,614",daily,"7,236",-26%
+12,https://www.the-numbers.com/movie/Grease,"Apr 8, 1998",5,"$406,690",n/c,"2,064",$197,"  $21,267,304",daily,"7,237",-16%
+13,https://www.the-numbers.com/movie/Grease,"Apr 9, 1998",5,"$580,696",+43%,"2,064",$281,"  $21,848,000",daily,"7,238",+23%
+14,https://www.the-numbers.com/movie/Grease,"Apr 10, 1998",9,"$1,075,000",+85%,"2,031",$529,"  $22,923,000",daily,"7,239",-38%
+15,https://www.the-numbers.com/movie/Grease,"Apr 11, 1998",10,"$975,000",-9%,"2,031",$480,"  $23,898,000",daily,"7,240",-62%
+16,https://www.the-numbers.com/movie/Grease,"Apr 13, 1998",9,"$332,807", ,"2,931",$114,"  $24,676,868",daily,"7,242",+4%
+17,https://www.the-numbers.com/movie/Grease,"Apr 14, 1998",9,"$306,708",-8%,"2,031",$151,"  $24,983,576",daily,"7,243",-25%
+18,https://www.the-numbers.com/movie/Grease,"Apr 15, 1998",10,"$268,774",-12%,"2,031",$132,"  $25,252,350",daily,"7,244",-34%
+19,https://www.the-numbers.com/movie/Grease,"Apr 16, 1998",9,"$265,000",-1%,"2,031",$130,"  $25,517,000",daily,"7,245",-54%
+20,https://www.the-numbers.com/movie/Grease,"Jul 8, 2010",-,"$35,010", ,12,"$2,918","  $181,543,520",daily,"11,711", 
+21,https://www.the-numbers.com/movie/Grease,"Jul 9, 2010",-,"$24,796",-29%,12,"$2,066","  $181,568,316",daily,"11,712", 
+22,https://www.the-numbers.com/movie/Grease,"Jul 10, 2010",-,"$31,512",+27%,12,"$2,626","  $181,599,828",daily,"11,713", 
+23,https://www.the-numbers.com/movie/Grease,"Jul 11, 2010",-,"$4,451",-86%,12,$371,"  $181,604,279",daily,"11,714", 
+24,https://www.the-numbers.com/movie/Grease,"Jul 15, 2010",-,"$42,158", ,21,"$2,008","  $181,646,437",daily,"11,718",+20%
+25,https://www.the-numbers.com/movie/Grease,"Jul 16, 2010",-,"$39,492",-6%,21,"$1,881","  $181,685,929",daily,"11,719",+59%
+26,https://www.the-numbers.com/movie/Grease,"Jul 17, 2010",-,"$44,387",+12%,21,"$2,114","  $181,730,316",daily,"11,720",+41%
+27,https://www.the-numbers.com/movie/Grease,"Jul 18, 2010",-,"$3,957",-91%,21,$188,"  $181,734,273",daily,"11,721",-11%
+28,https://www.the-numbers.com/movie/Grease,"Jul 22, 2010",-,"$1,191", ,3,$397,"  $181,735,464",daily,"11,725",-97%
+29,https://www.the-numbers.com/movie/Grease,"Jul 23, 2010",-,"$12,168",+922%,17,$716,"  $181,747,632",daily,"11,726",-69%
+30,https://www.the-numbers.com/movie/Grease,"Jul 24, 2010",-,"$15,930",+31%,17,$937,"  $181,763,562",daily,"11,727",-64%
+31,https://www.the-numbers.com/movie/Grease,"Jul 25, 2010",-,"$4,678",-71%,17,$275,"  $181,768,240",daily,"11,728",+18%
+32,https://www.the-numbers.com/movie/Grease,"Jul 30, 2010",-,"$14,153", ,33,$429,"  $181,782,393",daily,"11,733",+16%
+33,https://www.the-numbers.com/movie/Grease,"Jul 31, 2010",-,"$15,243",+8%,33,$462,"  $181,797,636",daily,"11,734",-4%
+34,https://www.the-numbers.com/movie/Grease,"Aug 1, 2010",-,"$7,504",-51%,33,$227,"  $181,805,140",daily,"11,735",+60%
+35,https://www.the-numbers.com/movie/Grease,"Aug 6, 2010",-,"$2,477", ,21,$118,"  $181,807,617",daily,"11,740",-82%
+36,https://www.the-numbers.com/movie/Grease,"Aug 7, 2010",-,"$3,809",+54%,21,$181,"  $181,811,426",daily,"11,741",-75%
+37,https://www.the-numbers.com/movie/Grease,"Aug 8, 2010",-,"$2,344",-38%,21,$112,"  $181,813,770",daily,"11,742",-69%
+0,https://www.the-numbers.com/movie/Grease,"Mar 27, 1998",2,"$14,665,768", ,"2,064","$7,106","  $167,763,260",weekly,"1,033",
+1,https://www.the-numbers.com/movie/Grease,"Apr 3, 1998",4,"$7,173,264",-51%,"2,064","$3,475","  $174,936,524",weekly,"1,034",
+2,https://www.the-numbers.com/movie/Grease,"Apr 10, 1998",9,"$3,669,606",-49%,"2,031","$1,807","  $178,606,130",weekly,"1,035",
+3,https://www.the-numbers.com/movie/Grease,"Apr 17, 1998",16,"$1,510,588",-59%,"1,989",$759,"  $180,116,718",weekly,"1,036",
+4,https://www.the-numbers.com/movie/Grease,"Apr 24, 1998",25,"$592,109",-61%,"1,451",$408,"  $180,708,827",weekly,"1,037",
+5,https://www.the-numbers.com/movie/Grease,"May 1, 1998",30,"$294,817",-50%,845,$349,"  $181,003,644",weekly,"1,038",
+6,https://www.the-numbers.com/movie/Grease,"May 8, 1998",25,"$341,139",+16%,802,$425,"  $181,344,783",weekly,"1,039",
+7,https://www.the-numbers.com/movie/Grease,"May 15, 1998",42,"$100,503",-71%,406,$248,"  $181,445,286",weekly,"1,040",
+8,https://www.the-numbers.com/movie/Grease,"May 22, 1998",57,"$29,150",-71%,406,$72,"  $181,474,436",weekly,"1,041",
+9,https://www.the-numbers.com/movie/Grease,"May 29, 1998",55,"$34,074",+17%,81,$421,"  $181,508,510",weekly,"1,042",
+10,https://www.the-numbers.com/movie/Grease,"Jul 2, 2010",55,"$35,010", ,12,"$2,918","  $181,543,520",weekly,"1,673",
+11,https://www.the-numbers.com/movie/Grease,"Jul 9, 2010",40,"$102,917",+194%,21,"$4,901","  $181,646,437",weekly,"1,674",
+12,https://www.the-numbers.com/movie/Grease,"Jul 16, 2010",40,"$89,027",-13%,21,"$4,239","  $181,735,464",weekly,"1,675",
+13,https://www.the-numbers.com/movie/Grease,"Jul 23, 2010",51,"$32,776",-63%,17,"$1,928","  $181,768,240",weekly,"1,676",
+14,https://www.the-numbers.com/movie/Grease,"Jul 30, 2010",50,"$36,900",+13%,33,"$1,118","  $181,805,140",weekly,"1,677",
+15,https://www.the-numbers.com/movie/Grease,"Aug 6, 2010",78,"$8,630",-77%,21,$411,"  $181,813,770",weekly,"1,678",
+0,https://www.the-numbers.com/movie/Jaws-2,"Jun 16, 1978",1,"$9,866,023", ,640,"$15,416","  $9,866,023",weekend,1,
+0,https://www.the-numbers.com/movie/Heaven-Can-Wait,"Jun 30, 1978",1,"$3,652,486", ,540,"$6,764","  $4,192,799",weekend,1,
+0,https://www.the-numbers.com/movie/Halloween-(1978),"Oct 30, 2020",8,"$274,000", ,781,$351,"  $47,274,000",weekend,"2,194",
+0,https://www.the-numbers.com/movie/Lord-of-the-Rings-The-(1978),"Nov 17, 1978",1,"$626,649", ,31,"$20,214","  $921,769",weekend,1,
+0,https://www.the-numbers.com/movie/Lord-of-the-Rings-The-(1978),"Nov 15, 1978",1,"$159,963", ,30,"$5,332","  $159,963",daily,1,
+0,https://www.the-numbers.com/movie/Superman,"Dec 15, 1978",1,"$7,465,343", ,508,"$14,696","  $7,465,343",weekend,1,
+1,https://www.the-numbers.com/movie/Superman,"Dec 22, 1978",2,"$6,535,784",-12%,806,"$8,109","  $18,580,136",weekend,2,
+2,https://www.the-numbers.com/movie/Superman,"Dec 29, 1978",1,"$10,364,384",+59%,817,"$12,686","  $40,925,251",weekend,3,
+3,https://www.the-numbers.com/movie/Superman,"Jan 5, 1979",1,"$7,492,687",-28%,806,"$9,296","  $54,826,254",weekend,4,
+0,https://www.the-numbers.com/movie/Superman,"Dec 15, 1978",1,"$2,187,100", ,508,"$4,305","  $2,187,100",daily,1,
+1,https://www.the-numbers.com/movie/Superman,"Dec 16, 1978",1,"$2,762,112",+26%,508,"$5,437","  $4,949,212",daily,2,
+2,https://www.the-numbers.com/movie/Superman,"Dec 17, 1978",1,"$2,516,131",-9%,508,"$4,953","  $7,465,343",daily,3,
+0,https://www.the-numbers.com/movie/Superman,"Dec 15, 1978",1,"$12,044,352", ,508,"$23,709","  $12,044,352",weekly,1,
+1,https://www.the-numbers.com/movie/Superman,"Dec 22, 1978",1,"$18,516,515",+54%,806,"$22,973","  $30,560,867",weekly,2,
+2,https://www.the-numbers.com/movie/Superman,"Dec 29, 1978",1,"$16,772,700",-9%,817,"$20,530","  $47,333,567",weekly,3,
+0,https://www.the-numbers.com/movie/Every-Which-Way-but-Loose,"Dec 22, 1978",1,"$10,272,000", ,"1,275","$8,056","  $10,272,000",weekend,1,
+1,https://www.the-numbers.com/movie/Every-Which-Way-but-Loose,"Jan 5, 1979",2,"$6,000,000", ,"1,218","$4,926","  $31,868,391",weekend,3,
+0,https://www.the-numbers.com/movie/Invasion-of-the-Body-Snatchers-(1978),"Dec 22, 1978",3,"$1,298,129", ,445,"$2,917","  $1,298,129",weekend,1,

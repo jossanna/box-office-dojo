@@ -2,21 +2,37 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
-from Main import load_movies, load_bo, get_col_configs, get_auto_height
+from Main import load_movies, load_bo, get_col_config, get_auto_height
+
 
 st.set_page_config(page_title='Movie Details', page_icon='🎬', layout="wide", initial_sidebar_state="auto", menu_items=None)
 
 bo = load_bo()
 movies = load_movies()
-config_cols = get_col_configs()
+config_cols_labels, config_cols = get_col_config()
 
-print(config_cols)
 
-bo = bo.sort_values('year', ascending=False)
+st.title('Movie Details')
 
-#Filtering out re-releases
+overview, breakdown, comparison = st.tabs(['Overview', 'Breakdown', 'Comparison'])
 
-bo = bo.loc[bo['date'].dt.year <= bo['year'] + 2, :]
+
+with overview:
+    with st.expander('🔧 Customize'):
+        with st.container():
+            st.caption('Filters')
+            
+            
+            
+        filters, vars = st.tabs(['Filters', 'Variables'])
+        
+        with filters:
+            st.slider('Select a range', movies['year'].min(), movies['year'].max(), (2023, 2023), 1)
+            genre_selector = st.multiselect('Select genre', options=movies['genre'].unique(), default=list(movies['genre'].unique()))
+        with vars:
+            print(config_cols.values())
+
+
 
 titles = bo['movie_title'].unique()
 
@@ -55,7 +71,7 @@ _df['dom_pct'] = _df['dom_pct'] * 100
 for col in _df_money_cols:
     _df[col] = _df[col] / 1_000_000
 
-st.title('Movie Details')
+
 
 
 if len(movie_selection) == 0:

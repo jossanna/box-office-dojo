@@ -11,9 +11,7 @@ st.write("# Welcome to Streamlit! 👋")
 
 @st.cache_data
 def load_movies():
-    # Load and preprocess your data here
     movies = pd.read_pickle('processed_data/movies.pkl.gz')
-    # Perform any necessary preprocessing
     return movies
 
 
@@ -24,16 +22,70 @@ load_movies()
 def load_bo():
     bo = pd.read_pickle('processed_data/bo.pkl.gz')
     bo['date'] = pd.to_datetime(bo['date'])
-    # Perform any necessary preprocessing
+    bo = bo.sort_values('year', ascending=False)
+    bo = bo.loc[bo['date'].dt.year <= bo['year'] + 2, :]
     return bo
 
 
 load_bo()
 
 
-
 @st.cache_data
-def get_col_configs():
+def get_col_config():
+    config_cols_labels = {
+    "dom_release_date": "DOM Release Date",
+    'opening_wknd_bo': "DOM OW BO $",
+    'int_bo': "INT BO $",
+    'dom_pct': "DOM BO %",
+    'budget': "Budget",
+    'dom_bo': "DOM BO $",
+    'legs': "Legs",
+    'url': "Link",
+    'runtime': "Runtime",
+    'year': "Year",
+    'est_profit': "Est. Profit",
+    'movie_title': "Movie Title",
+    'adj_dom_bo': "Adj. DOM BO $",
+    'keywords': "Keywords",
+    'mpaa': "MPAA Rating",
+    'Based on': "Based on works from",
+    'opening_to_budget': "Opening-to-Budget-Ratio",
+    'n_max_theaters': "Max # of Theaters",
+    'prod_multiple': "Production Multiple",
+    'source': "Source",
+    'prod_method': "Production Method",
+    'producers': "Production Companies",
+    'prod_countries': "Production Countries",
+    'languages': "Languages",
+    'creative_type': "Creative Type",
+    'franchise': "Franchise",
+    'ww_bo': "WW BO $",
+    'tot_dom_vid_sales': "DOM VID Sales $",
+    'genre': "Genre",
+    'n_opening_theaters': "# OW Theaters",
+    'weeks_average_run_theater': "AVG weeks Theatrical run",
+    'video_release_date': "DOM VID Release Date",
+    'dom_release_date_weekday': "WKDay DOM Release Date",
+    'diff_dom_video_release': "Release Window",
+    'dom_release_date_week_num': "WKNum DOM Release Date",
+    'china_bo': "CHINA BO $",
+    'int_ex_china_bo': "INT Ex China BO $",
+    'date': "Date",
+    'rank': "Rank",
+    'market': "Market",
+    'pct_lw': "% Change LW",
+    'per_theater': "Per Theater Gross $",
+    'total_gross': "Total Gross to Date $",
+    'theaters': "# of Theaters",
+    'gross': "Gross $",
+    'pct_change': "Change in %",
+    'kind': "Time Horizon",
+    'day_kind': "Kind of Day",
+    'weekday': "Weekday",
+    'week_num': "Calendar Week",
+    'kind_num': "# Time Horizon"
+    }
+    
     config_cols = {
         "dom_release_date": st.column_config.DateColumn("DOM Release Date", format="YYYY-MM-DD"),
         'opening_wknd_bo': st.column_config.NumberColumn("DOM OW BO $", help='Opening Weekend Box Office in US-$'),
@@ -71,10 +123,26 @@ def get_col_configs():
         'diff_dom_video_release': st.column_config.NumberColumn('Release Window', help='Difference between DOM Release Date and DOM VID Release Date'),
         'dom_release_date_week_num': st.column_config.NumberColumn('WKNum DOM Release Date'),
         'china_bo': st.column_config.NumberColumn('CHINA BO $', help='Chinese Box Office in US-$'),
-        'int_ex_china_bo': st.column_config.NumberColumn('INT Ex China BO $', help='Chinese ')}
-    return config_cols
+        'int_ex_china_bo': st.column_config.NumberColumn('INT Ex China BO $', help='Chinese '),
+        'date': st.column_config.DateColumn('Date'),
+        'rank': st.column_config.NumberColumn('Rank'),
+        'market': st.column_config.TextColumn('Market'),
+        'pct_lw': st.column_config.TextColumn('% Change LW', help='% Change compared to Last Week'),
+        'per_theater': st.column_config.NumberColumn('Per Theater Gross $'),
+        'total_gross': st.column_config.NumberColumn('Total Gross to Date $'),
+        'theaters': st.column_config.NumberColumn('# of Theaters'),
+        'gross': st.column_config.NumberColumn('Gross $'),
+        'pct_change': st.column_config.NumberColumn('Change in %'),
+        'kind': st.column_config.NumberColumn('Time Horizon'),
+        'day_kind': st.column_config.TextColumn('Kind of Day'),
+        'weekday': st.column_config.TextColumn('Weekday'),
+        'week_num': st.column_config.NumberColumn('Calendar Week'),
+        'kind_num': st.column_config.NumberColumn('# Time Horizon')
+        }
+    
+    return config_cols, config_cols_labels
 
-get_col_configs()
+get_col_config()
 
 
 def get_auto_height(df):

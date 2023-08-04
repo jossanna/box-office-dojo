@@ -19,6 +19,9 @@ crew_list = ['Director', 'Screenwriter', 'Director of Photography', 'Producer', 
 
 crew = st.sidebar.selectbox('Select Crew Type', crew_list)
 
+movies[crew] = movies.loc[~movies[crew].isna(),
+                                crew].apply(eval)
+
 crew_member_list = movies.explode(crew)
 
 crew_member_list = crew_member_list.sort_values('ww_bo', ascending=False)

@@ -10,7 +10,8 @@ st.set_page_config(page_title='Cast', page_icon='🎥',
 bo = load_bo()
 movies = load_movies()
 
-cast = 'cast'
+movies['cast'] = movies.loc[~movies['cast'].isna(),
+                                'cast'].apply(eval)
 
 cast_member_list = movies.explode(cast)
 

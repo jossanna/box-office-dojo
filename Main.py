@@ -13,8 +13,6 @@ st.write("# Welcome to Streamlit! 👋")
 def load_movies():
     # Load and preprocess your data here
     movies = pd.read_pickle('processed_data/movies.pkl.gz')
-    movies[crew] = movies.loc[~movies[crew].isna(), crew].apply(eval)
-    movies[cast] = movies.loc[~movies[cast].isna(), cast].apply(eval)
     # Perform any necessary preprocessing
     return movies
 

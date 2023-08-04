@@ -12,7 +12,7 @@ st.write("# Welcome to Streamlit! 👋")
 def load_movies():
     # Load and preprocess your data here
     movies = pd.read_pickle(
-    'processed_data/movies.pkl')
+    'processed_data/movies.pkl.gz')
     # Perform any necessary preprocessing
     return movies
 

@@ -2,12 +2,13 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
-from Main import load_movies, load_bo
+from Main import load_movies, load_bo, get_col_configs
 
 st.set_page_config(page_title='Movie Details', page_icon='🎬', layout="wide", initial_sidebar_state="auto", menu_items=None)
 
 bo = load_bo()
 movies = load_movies()
+config_cols = get_column_configs()
 
 bo = bo.sort_values('year', ascending=False)
 
@@ -61,15 +62,7 @@ if len(movie_selection) == 0:
 else:
   st.subheader('Exploring ' + movie_selection)
 
-  st.dataframe(width=None, data=_df, hide_index=True, column_config={"dom_release_date": st.column_config.DateColumn(
-      "Release Date", format="YYYY-MM-DD"), 'opening_wknd_bo': st.column_config.NumberColumn("BO: Opening Weekend $",
-                                                                                            format='$ %.1fM'), 'int_bo': st.column_config.NumberColumn("BO: International $",
-                                                                                                                                                        format='$ %.1fM'), 'ww_bo': st.column_config.NumberColumn("BO: Worldwide $",
-                                                                                                                                                                                                                  format='$ %.1fM'), 'dom_pct': st.column_config.NumberColumn("BO: Domestic %",
-                                                                                                                                                                                                                                                                              format='%.1f%%'), 'budget': st.column_config.NumberColumn("Budget",
-                                                                                                                                                                                                                                                                                                                                        format='$ %.1fM'), 'dom_bo': st.column_config.NumberColumn("BO: Domestic $",
-                                                                                                                                                                                                                                                                                                                                                                                                  format='$ %.1fM'), 'legs': st.column_config.NumberColumn("Legs",
-                                                                                                                                                                                                                                                                                                                                                                                                                                                            format='%.1fx')}, use_container_width=True, height=(_df.shape[0] + 1) * 35 + 3)
+  st.dataframe(width=None, data=_df, hide_index=True, column_config=config_cols, use_container_width=True, height=(_df.shape[0] + 1) * 35 + 3)
 
 
   def format_pct(value):

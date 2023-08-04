@@ -12,9 +12,6 @@ movies = load_movies()
 
 cast = 'cast'
 
-movies[cast] = movies.loc[~movies[cast].isna(),
-                                cast].apply(eval)
-
 cast_member_list = movies.explode(cast)
 
 cast_member_list = cast_member_list.sort_values('ww_bo', ascending=False)

@@ -10,8 +10,6 @@ st.set_page_config(page_title='Crew', page_icon='🎥',
 bo = load_bo()
 movies = load_movies()
 
-st.dataframe(movies.head())
-
 crew_list = ['Director', 'Screenwriter', 'Director of Photography', 'Producer', 'Executive Producer',
        'Editor', 'Composer','Production Designer',
        'Costume Designer', 'Story Creator',
@@ -19,15 +17,13 @@ crew_list = ['Director', 'Screenwriter', 'Director of Photography', 'Producer', 
 
 crew = st.sidebar.selectbox('Select Crew Type', crew_list)
 
-movies[crew] = movies.loc[~movies[crew].isna(),
-                                crew].apply(eval)
-
 crew_member_list = movies.explode(crew)
+
+crew_member_list = crew_member_list.loc[~(crew_member_list[crew] == ''), :]
 
 crew_member_list = crew_member_list.sort_values('ww_bo', ascending=False)
 
 crew_members = crew_member_list[crew].dropna().unique()
-
 
 titles = bo['movie_title'].unique()
 
@@ -40,6 +36,7 @@ bo = bo.loc[bo['date'].dt.year <= bo['year'] + 2, :]
 
 with st.sidebar:
     
+    st.divider()
     
     ovr_selector = st.sidebar.radio('Select what you want', [
                                     'Top List', 'Individual'])

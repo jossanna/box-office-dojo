@@ -110,8 +110,8 @@ if ovr_selector == 'Top List':
         
     crew_member_list['dom_pct'] = crew_member_list['dom_pct'] * 100
 
-    for col in _df_money_cols:
-        crew_member_list[col] = crew_member_list[col] / 1_000_000
+    # for col in _df_money_cols:
+    #     crew_member_list[col] = crew_member_list[col] / 1_000_000
     
     crew_member_list_filter = crew_member_list.groupby(crew)['movie_title'].transform(lambda lst: len(lst) >= n_movies)
     
@@ -121,15 +121,11 @@ if ovr_selector == 'Top List':
 
     top = crew_member_list.groupby(crew)[_df_cols].agg(aggregate).sort_values(sort_by, ascending=False)[:slider]
     top = pd.merge(top, crew_member_list.groupby(crew)['movie_title'].agg(list), on=crew)
-
-
     
-
+    top_formatted = top.style.format(thousands=" ", precision=0)
     
-    
-    
-    st.dataframe(top, column_config={'opening_wknd_bo': st.column_config.NumberColumn("BO: Opening Weekend $", format='$ %.1fM'), 'int_bo': st.column_config.NumberColumn("BO: International $",
-                                                                                                                                                          format='$ %.1fM'), 'ww_bo': st.column_config.NumberColumn("BO: Worldwide $",
+    st.dataframe(top_formatted, column_config={'opening_wknd_bo': st.column_config.NumberColumn("BO: Opening Weekend $"), 'int_bo': st.column_config.NumberColumn("BO: International $",
+                                                                                                                                                          format='$ %fM', step=1000), 'ww_bo': st.column_config.NumberColumn("BO: Worldwide $",
                                                                                                                                                                                                                     format='$ %.1fM'), 'dom_pct': st.column_config.NumberColumn("BO: Domestic %",
                                                                                                                                                                                                                                                                                 format='%.1f%%'), 'budget': st.column_config.NumberColumn("Budget",
                                                                                                                                                                                                                                                                                                                                           format='$ %.1fM'), 'dom_bo': st.column_config.NumberColumn("BO: Domestic $",

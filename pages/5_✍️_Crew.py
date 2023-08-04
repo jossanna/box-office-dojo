@@ -10,6 +10,8 @@ st.set_page_config(page_title='Crew', page_icon='🎥',
 bo = load_bo()
 movies = load_movies()
 
+movies.head()
+
 crew_list = ['Director', 'Screenwriter', 'Director of Photography', 'Producer', 'Executive Producer',
        'Editor', 'Composer','Production Designer',
        'Costume Designer', 'Story Creator',

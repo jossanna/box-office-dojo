@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
-from Main import load_movies, load_bo, get_col_config, get_auto_height
+from main import load_movies, load_bo, get_col_config, get_auto_height
 
 
 st.set_page_config(page_title='Movie Details', page_icon='🎬', layout="wide", initial_sidebar_state="auto", menu_items=None)

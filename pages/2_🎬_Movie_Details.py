@@ -10,6 +10,8 @@ bo = load_bo()
 movies = load_movies()
 config_cols = get_col_configs()
 
+print(config_cols)
+
 bo = bo.sort_values('year', ascending=False)
 
 #Filtering out re-releases

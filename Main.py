@@ -17,7 +17,7 @@ def load_movies():
     return movies
 
 
-movies = load_movies()
+load_movies()
 
 
 @st.cache_data
@@ -28,7 +28,7 @@ def load_bo():
     return bo
 
 
-bo = load_bo()
+load_bo()
 
 
 
@@ -74,6 +74,7 @@ def get_col_configs():
         'int_ex_china_bo': st.column_config.NumberColumn('INT Ex China BO $', help='Chinese ')}
     return config_cols
 
+get_col_configs()
 
 
 def get_auto_height(df):

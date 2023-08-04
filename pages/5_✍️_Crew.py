@@ -1,9 +1,9 @@
-import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
 from Main import load_movies, load_bo
 
+import streamlit as st
 st.set_page_config(page_title='Crew', page_icon='🎥',
                    layout="wide", initial_sidebar_state="auto", menu_items=None)
 

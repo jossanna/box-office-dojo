@@ -2,8 +2,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 from Start import load_movies, load_bo
 
 st.set_page_config(page_title='Crew', page_icon='🎥',

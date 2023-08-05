@@ -84,6 +84,9 @@ def get_col_config():
     'weekday': "Weekday",
     'week_num': "Calendar Week",
     'kind_num': "# Time Horizon"
+    'metascore': 'Metacritic Score',
+    'imdb_url': 'IMDB Link',
+    'imdb_rating': 'IMDB Rating'
     }
     
     variable_val_movies = ['est_profit', 'mpaa', ]
@@ -143,7 +146,10 @@ def get_col_config():
         'day_kind': st.column_config.TextColumn('Kind of Day'),
         'weekday': st.column_config.TextColumn('Weekday'),
         'week_num': st.column_config.NumberColumn('Calendar Week'),
-        'kind_num': st.column_config.NumberColumn('# Time Horizon')
+        'kind_num': st.column_config.NumberColumn('# Time Horizon'),
+        'metascore': st.column_config.NumberColumn('Metacritic Score'),
+        'imdb_url': st.column_config.LinkColumn('IMDB Link'),
+        'imdb_rating': st.column_config.NumberColumn('IMDB Rating')
         }
     
     return config_cols, config_cols_labels, agg_dict

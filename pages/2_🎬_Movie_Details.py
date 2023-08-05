@@ -9,7 +9,7 @@ st.set_page_config(page_title='Movie Details', page_icon='🎬', layout="wide", 
 
 bo = load_bo()
 movies = load_movies()
-config_cols_labels, config_cols = get_col_config()
+config_cols, config_cols_labels, agg_dict = get_col_config()
 
 
 st.title('Movie Details')
@@ -24,17 +24,28 @@ with overview:
             
             
             
-        filters, vars = st.tabs(['Filters', 'Variables'])
+        filters, vars, vals = st.tabs(['Filters', 'Variables', 'Values'])
         
         with filters:
+            # Date Filter
             st.slider('Select a range', movies['year'].min(), movies['year'].max(), (2023, 2023), 1)
+            # Genre Filter
             genre_selector = st.multiselect('Select genre', options=movies['genre'].unique(), default=list(movies['genre'].unique()))
+            # MPAA rating
+            
         with vars:
-            print(config_cols.values())
+            metrics_selector = st.multiselect('Select Variables', options=config_cols_labels.values(), default=list(config_cols_labels.values()))
 
 
 
 titles = bo['movie_title'].unique()
+
+
+
+
+
+
+
 
 
 with st.sidebar:

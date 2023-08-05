@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import plotly.express as px
-from Main import load_movies, load_bo
+from main import load_movies, load_bo, get_col_config, get_auto_height
 
 import streamlit as st
 st.set_page_config(page_title='Crew', page_icon='🎥',
@@ -9,69 +9,131 @@ st.set_page_config(page_title='Crew', page_icon='🎥',
 
 bo = load_bo()
 movies = load_movies()
+config_cols, config_cols_labels, agg_dict = get_col_config()
 
+
+_df_cols = ['movie_title', 'budget', 'opening_wknd_bo',
+            'legs', 'ww_bo', 'dom_bo', 'int_bo', 'dom_pct']
+    
+
+header, filter = st.columns([0.7, 0.3])
+with header:
+    st.title('🎥 Crew')
+    
 crew_list = ['Director', 'Screenwriter', 'Director of Photography', 'Producer', 'Executive Producer',
        'Editor', 'Composer','Production Designer',
        'Costume Designer', 'Story Creator',
        'Based on', 'Casting Director']
 
-crew = st.sidebar.selectbox('Select Crew Type', crew_list)
-
-crew_member_list = movies.explode(crew)
-
-crew_member_list = crew_member_list.loc[~(crew_member_list[crew] == ''), :]
-
-crew_member_list = crew_member_list.sort_values('ww_bo', ascending=False)
-
-crew_members = crew_member_list[crew].dropna().unique()
-
-titles = bo['movie_title'].unique()
-
-# Filtering out re-releases
-
-bo = pd.merge(bo, movies.loc[:, ['url', crew]], on='url')
-
-bo = bo.loc[bo['date'].dt.year <= bo['year'] + 2, :]
+with filter:
+    crew_kind_selector = st.selectbox('Select Crew Type', crew_list)
 
 
-with st.sidebar:
+bo = pd.merge(bo, movies.loc[:, ['url', crew_kind_selector]], on='url')
+
+overview, breakdown, comparison = st.tabs(['Overview', 'Breakdown', 'Comparison'])
+
+
+with overview:
     
-    st.divider()
-    
-    ovr_selector = st.sidebar.radio('Select what you want', [
-                                    'Top List', 'Individual'])
-    
-    franchise = st.sidebar.radio('Franchise vs. non-Franchise', ['All', 'Non-Franchise-Only'])
-    
-    if franchise == 'Non-Franchise-Only':
-        movies = movies.loc[movies['franchise'].isna(), :]
-        crew_member_list = crew_member_list.loc[crew_member_list['franchise'].isna(), :]
+    with st.expander('🔧 Customize'):
+        filters, metrics, vals = st.tabs(['Filters', 'Metrics', 'Values'])
+        
+        with filters:
+            filter_c1, filter_c2, filter_c3, filter_c4, filter_c5, filter_c6 = st.columns(6)
+            
+            with filter_c1:
+                genre_activator = st.checkbox('Genre')
+            with filter_c2:
+                mpaa_activator = st.checkbox('MPAA')
+            with filter_c3:
+                source_activator = st.checkbox('Source')
+            with filter_c4:
+                prod_activator = st.checkbox('Production Method')
+            with filter_c5:
+                producers_activator = st.checkbox('Prodcution Company')
+            
+            # Date Filter
+            st.slider('Select a range', movies['year'].min(), movies['year'].max(), (2023, 2023), 1)
+            
+            # Genre Filter
+            if genre_activator:
+                genre_selector = st.multiselect('Select genre', options=movies['genre'].unique(), default=list(movies['genre'].unique()))
+            
+            # Source Selector
+            if source_activator:
+                source_selector = st.multiselect('Select source', options=movies['source'].unique(), default=list(movies['source'].unique()))
+            
+            # MPAA Selector
+            if mpaa_activator:
+                mpaa_selector = st.multiselect('Select MPAA Rating', options=movies['mpaa'].unique(), default=list(movies['mpaa'].unique()))
+            
+            # Production Method
+            if prod_activator:
+                prod_selector = st.multiselect('Select Production Method', options=movies['prod_method'].unique(), default=list(movies['prod_method'].unique()))
+            
+            # Production Company
+            if producers_activator:
+                producers_selector = st.multiselect('Select Production Company', options=movies['producers'].unique(), default=list(movies['producers'].unique()))
+            
+            
+        with metrics:
+            metrics_selector = st.multiselect('Select Metrics', options=config_cols_labels.values(), default=list(config_cols_labels.values()))
+            agg_selector = st.selectbox('Select Aggregation', options=['Sum', 'Average'])
+            agg_selector = agg_dict[agg_selector]
+        
+        with vals:
+            col_o_val_1, col_o_val_2, col_o_val_3, col_o_val_4, col_o_val_5= st.columns(5)
 
-    
-    
+            with col_o_val_1:
+                sort_by_selector = st.selectbox('Sort by', ['budget', 'opening_wknd_bo', 'ww_bo', 'dom_bo', 'int_bo'])
 
-    if ovr_selector == 'Individual':
+            with col_o_val_2:
+                row_num_selector = st.slider('How many to show', min_value=25, max_value=250, value=50)
+                
+            with col_o_val_3:
+                metric_filter_selector = st.selectbox('Select Metric to filter', options=metrics_selector)
+            
+            with col_o_val_4:
+                value_filter_selector = st.slider('Select values', )
+            with col_o_val_5:    
+                n_movies_selector = st.slider('Minimum Number of Movies', min_value=1, max_value=10)
     
-        st.divider()
+    st.subheader(crew_kind_selector)
 
-        crew_selection = st.sidebar.selectbox(
-            'Select ' + crew, list(crew_members))
 
-        titles = movies.loc[movies[crew].apply(lambda x:  isinstance(
-            x, list) and crew_selection in x), 'movie_title'].unique()
+crew_details = movies.explode(crew_kind_selector)
+crew_details = crew_details.loc[~(crew_details[crew_kind_selector] == ''), :]
+crew_details = crew_details.sort_values('ww_bo', ascending=False)
+
+crew_directory = crew_details[crew_kind_selector].dropna().unique()
+
+
+with breakdown:
+    
+    with st.expander('🔧 Customize'):
+        
+        col_b_1, col_b_2, col_b_3 = st.columns(3)
+        
+        with col_b_1:
+            crew_member_selector = st.selectbox('Select ' + crew_kind_selector, list(crew_directory))
+
+        titles = movies.loc[movies[crew_kind_selector].apply(lambda x:  isinstance(x, list) and crew_member_selector in x), 'movie_title'].unique()
+        
+        with col_b_2:
+            movie_selector = st.multiselect('Select Movie', list(titles), default=titles)
 
         # Filter available markets based on the selected movie
         try:
-            available_markets = bo.loc[bo[crew].apply(lambda x:  isinstance(
-                x, list) and crew_selection in x), 'market'].unique()
-            market_selection = st.sidebar.selectbox(
-                'Select Market', available_markets, index=int(np.where(available_markets == 'Domestic')[0][0]))
+            available_markets = bo.loc[bo[crew_kind_selector].apply(lambda x:  isinstance(
+                x, list) and crew_member_selector in x), 'market'].unique()
+            market_selection = st.selectbox('Select Market', available_markets, index=int(np.where(available_markets == 'Domestic')[0][0]))
         except IndexError:
             pass
 
         # Filter available time horizons based on the selected movie and market
         try:
-            available_time_horizons = bo.loc[(bo[crew].apply(lambda x:  isinstance(x, list) and crew_selection in x)) & (
+            available_time_horizons = bo.loc[(bo[crew_kind_selector].apply(lambda x:  isinstance(x, list) and crew_member_selector in x)) & (
                 bo['market'] == market_selection), 'kind'].unique()
             timeframe_selection = st.sidebar.selectbox(
                 'Select Time Horizon', available_time_horizons, index=int(np.where(available_time_horizons == 'weekend')[0][0]))
@@ -85,65 +147,10 @@ with st.sidebar:
                                 'Absolute', 'Indexed'])
 
 
-st.title(crew)
+    st.subheader('Exploring ' + crew_member_selector)
 
-_df_cols = ['movie_title', 'budget', 'opening_wknd_bo',
-            'legs', 'ww_bo', 'dom_bo', 'int_bo', 'dom_pct']
-_df_money_cols = ['budget', 'dom_bo', 'int_bo', 'ww_bo', 'opening_wknd_bo']
+    _df = movies.loc[movies['movie_title'].isin(movie_selector), _df_cols]
 
-
-if ovr_selector == 'Top List':
-    
-    filter1, filter2, filter3, filter4 = st.columns(4)
-    
-    with filter1:
-        aggregate = st.selectbox('Aggregate by', ['sum', 'mean'])
-    
-    with filter2:
-        sort_by = st.selectbox('Sort by', ['budget', 'opening_wknd_bo', 'ww_bo', 'dom_bo', 'int_bo'])
-    
-    with filter3:
-        slider = st.slider('How many to show', min_value=3, max_value=50)
-    
-    with filter4:
-        n_movies = st.slider('Minimum Number of Movies', min_value=1, max_value=10)
-        
-    crew_member_list['dom_pct'] = crew_member_list['dom_pct'] * 100
-
-    # for col in _df_money_cols:
-    #     crew_member_list[col] = crew_member_list[col] / 1_000_000
-    
-    crew_member_list_filter = crew_member_list.groupby(crew)['movie_title'].transform(lambda lst: len(lst) >= n_movies)
-    
-    crew_member_list_filter = crew_member_list_filter.fillna(False)
-    
-    crew_member_list = crew_member_list.loc[crew_member_list_filter, :]
-
-    top = crew_member_list.groupby(crew)[_df_cols].agg(aggregate).sort_values(sort_by, ascending=False)[:slider]
-    top = pd.merge(top, crew_member_list.groupby(crew)['movie_title'].agg(list), on=crew)
-    
-    top_formatted = top.style.format(thousands=" ", precision=0)
-    
-    st.dataframe(top_formatted, column_config={'opening_wknd_bo': st.column_config.NumberColumn("BO: Opening Weekend $"), 'int_bo': st.column_config.NumberColumn("BO: International $",
-                                                                                                                                                          format='$ %fM', step=1000), 'ww_bo': st.column_config.NumberColumn("BO: Worldwide $",
-                                                                                                                                                                                                                    format='$ %.1fM'), 'dom_pct': st.column_config.NumberColumn("BO: Domestic %",
-                                                                                                                                                                                                                                                                                format='%.1f%%'), 'budget': st.column_config.NumberColumn("Budget",
-                                                                                                                                                                                                                                                                                                                                          format='$ %.1fM'), 'dom_bo': st.column_config.NumberColumn("BO: Domestic $",
-                                                                                                                                                                                                                                                                                                                                                                                                     format='$ %.1fM'), 'legs': st.column_config.NumberColumn("Legs", format='%.1fx')},
-                                     use_container_width=True, height=(top.shape[0] + 1) * 35 + 3)
-    
-    
-
-else:
-    st.subheader('Exploring ' + crew_selection)
-
-    movie_selection = st.multiselect('Select Movie', list(
-        titles), default=titles)  # Convert titles array to a list
-
-
-    _df = movies.loc[movies['movie_title'].isin(movie_selection), _df_cols]
-
-    # Calculate sum, average, and median for numeric columns
     summary_row = _df.select_dtypes(include=np.number).agg(['sum', 'mean'])
 
     summary_row['movie_title'] = ['SUM', 'AVERAGE']
@@ -151,25 +158,10 @@ else:
     # Append the summary row to the DataFrame
     _df = _df.append(summary_row)
 
+    _df['dom_pct'] = _df['dom_pct'] * 100 
 
-    _df['dom_pct'] = _df['dom_pct'] * 100
 
-    for col in _df_money_cols:
-        _df[col] = _df[col] / 1_000_000    
-    
-    
-    
-    
-
-    st.dataframe(width=None, data=_df, hide_index=True, column_config={"dom_release_date": st.column_config.DateColumn(
-        "Release Date", format="YYYY-MM-DD"), 'opening_wknd_bo': st.column_config.NumberColumn("BO: Opening Weekend $",
-                                                                                               format='$ %.1fM'), 'int_bo': st.column_config.NumberColumn("BO: International $",
-                                                                                                                                                          format='$ %.1fM'), 'ww_bo': st.column_config.NumberColumn("BO: Worldwide $",
-                                                                                                                                                                                                                    format='$ %.1fM'), 'dom_pct': st.column_config.NumberColumn("BO: Domestic %",
-                                                                                                                                                                                                                                                                                format='%.1f%%'), 'budget': st.column_config.NumberColumn("Budget",
-                                                                                                                                                                                                                                                                                                                                          format='$ %.1fM'), 'dom_bo': st.column_config.NumberColumn("BO: Domestic $",
-                                                                                                                                                                                                                                                                                                                                                                                                     format='$ %.1fM'), 'legs': st.column_config.NumberColumn("Legs",
-                                                                                                                                                                                                                                                                                                                                                                                                                                                              format='%.1fx')}, use_container_width=True, height=(_df.shape[0] + 1) * 35 + 3)
+    st.dataframe(width=None, data=_df, hide_index=True, column_config=config_cols, use_container_width=True, height=get_auto_height(_df))
 
     def format_pct(value):
         # Format the value as currency with 2 decimal places
@@ -180,7 +172,7 @@ else:
         value = value / 1_000_000
         return f'$ {value: .1f}M'
 
-    _plt = bo.loc[(bo['movie_title'].isin(movie_selection)) & (bo['kind'] == timeframe_selection) & (
+    _plt = bo.loc[(bo['movie_title'].isin(movie_selector)) & (bo['kind'] == timeframe_selection) & (
         bo['market'] == market_selection)].sort_values('kind_num', ascending=True)
 
     if value_selector == 'Indexed':
@@ -235,11 +227,42 @@ else:
         st.plotly_chart(fig_indiv, use_container_width=True,
                         sharing="streamlit", theme="streamlit")
         st.dataframe(width=None, data=details_indiv, hide_index=False,
-                     height=(details_indiv.shape[0] + 1) * 35 + 3, use_container_width=True)
+                        height=get_auto_height(details_indiv), use_container_width=True)
 
     with tab2:
         st.subheader('Cumulative')
         st.plotly_chart(fig_cume, use_container_width=True,
                         sharing="streamlit", theme="streamlit")
         st.dataframe(width=None, data=details_cume, hide_index=False,
-                     height=(details_indiv.shape[0] + 1) * 35 + 3, use_container_width=True)
+                        height=get_auto_height(details_cume), use_container_width=True)
+
+
+
+#titles = bo['movie_title'].unique()
+
+
+with st.sidebar:
+    
+    franchise = st.sidebar.radio('Franchise vs. non-Franchise', ['All', 'Non-Franchise-Only'])
+    
+    if franchise == 'Non-Franchise-Only':
+        movies = movies.loc[movies['franchise'].isna(), :]
+        crew_details = crew_details.loc[crew_details['franchise'].isna(), :]
+
+    
+    
+crew_details['dom_pct'] = crew_details['dom_pct'] * 100
+
+crew_member_list_filter = crew_details.groupby(crew_kind_selector)['movie_title'].transform(lambda lst: len(lst) >= n_movies_selector)
+
+crew_member_list_filter = crew_member_list_filter.fillna(False)
+
+crew_details = crew_details.loc[crew_member_list_filter, :]
+
+top = crew_details.groupby(crew_kind_selector)[_df_cols].agg(agg_selector).sort_values(sort_by_selector, ascending=False)[:row_num_selector]
+top = pd.merge(top, crew_details.groupby(crew_kind_selector)['movie_title'].agg(list), on=crew_kind_selector)
+
+top_formatted = top.style.format(thousands=" ", precision=0)
+
+st.dataframe(top_formatted, column_config=config_cols,
+                                    use_container_width=True, height=get_auto_height(top))

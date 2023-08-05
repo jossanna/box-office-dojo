@@ -86,6 +86,12 @@ def get_col_config():
     'kind_num': "# Time Horizon"
     }
     
+    variable_val_movies = ['est_profit', 'mpaa', ]
+    variable_val_bo = []
+    filter_val = ['mpaa']
+    agg_dict = {'Average': 'mean', 'Sum': 'sum'}
+    
+    
     config_cols = {
         "dom_release_date": st.column_config.DateColumn("DOM Release Date", format="YYYY-MM-DD"),
         'opening_wknd_bo': st.column_config.NumberColumn("DOM OW BO $", help='Opening Weekend Box Office in US-$'),
@@ -140,7 +146,7 @@ def get_col_config():
         'kind_num': st.column_config.NumberColumn('# Time Horizon')
         }
     
-    return config_cols, config_cols_labels
+    return config_cols, config_cols_labels, agg_dict
 
 get_col_config()
 

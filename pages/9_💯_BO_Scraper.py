@@ -15,7 +15,7 @@ url_base = 'https://www.the-numbers.com'
 
 timestamp = datetime.now().strftime('%Y%m%d')
 
-path = '/Users/johannes/Library/CloudStorage/GoogleDrive-johannes.ossanna@gmail.com/My Drive/data'
+path = 'raw_data'
 
 def get_directory(start, end):
     # Movie URLs are structured as such: https://www.the-numbers.com/movies/year/{year}
@@ -291,10 +291,10 @@ def get_movie_data(movie_urls, year):
     country_list = int_perf.loc[int_perf['country_url'].str.contains('https'), 'country_url']
     country_list = country_list.dropna()
     
-    progress_text = "Operation in progress. Please wait."
+    progress_text = "Scraping in progress. Please wait."
     my_bar = st.progress(0, text=progress_text)
     
-    counter = country_list.shape[0]
+    counter = 0
 
     for movie in country_list:
         time.sleep(0.5)
@@ -304,9 +304,9 @@ def get_movie_data(movie_urls, year):
 
         country_bo_perf = get_boxoffice(bo_perf_type, country_bo_perf, movie, soup)
         
-        counter -= 1
-
-        print(str(counter) + ' of ' + str(country_list.shape[0]) + ' intl remaining')
+        counter += 1
+        
+        my_bar.progress(counter/country_list.shape[0], text=progress_text)
 
     movie_details = movie_details.drop(columns=column_unroll)
     movie_details.to_csv(path + '/' + str(year) + '_movie_details.csv')
@@ -319,8 +319,16 @@ def get_movie_data(movie_urls, year):
 # Streamlit App
 st.title('Movie Details')
 
+bo = pd.read_pickle('processed_data/bo.pkl.gz')
+latest_date = bo['date'].max()
+
+st.caption('Last Update:'+ latest_date)
+
+
 min = st.number_input('From Year', step=1)
 max = st.number_input('Until Year', step=1)
+
+
 
 if st.button('Start Scraping'):
     directory = []

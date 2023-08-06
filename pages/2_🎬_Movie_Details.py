@@ -2,8 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
-import sys
-sys.path.append("box-office-dojo")
+import main
 from main import load_movies, load_bo, get_col_config, get_auto_height
 
 

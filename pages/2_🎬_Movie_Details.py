@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import sys
-sys.path.append("main")
+sys.path.append("box-office-dojo")
 from main import load_movies, load_bo, get_col_config, get_auto_height
 
 

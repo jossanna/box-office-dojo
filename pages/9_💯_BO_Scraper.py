@@ -322,7 +322,7 @@ st.title('Movie Details')
 bo = pd.read_pickle('processed_data/bo.pkl.gz')
 latest_date = bo['date'].max()
 
-st.caption('Last Update:'+ latest_date)
+st.caption('Last Update:'+ str(latest_date))
 
 
 min = st.number_input('From Year', step=1)

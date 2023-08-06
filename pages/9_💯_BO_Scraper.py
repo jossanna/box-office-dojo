@@ -248,7 +248,10 @@ def get_movie_data(movie_urls, year):
     int_perf = pd.DataFrame(columns=int_perf_cols)
     country_bo_perf = pd.DataFrame(columns=bo_perf_cols)
     
-    _counter = movie_urls.shape[0]
+    progress_text_first = "Scraping movies + domestic box office in progress. Please wait."
+    all_bar = st.progress(0, text=progress_text_first)
+    
+    _counter = 0
 
     for movie in movie_urls:
         time.sleep(0.5)
@@ -275,9 +278,11 @@ def get_movie_data(movie_urls, year):
 
         movie_details_list.append(movie_dict)
         
-        _counter -= 1
-
-        print(str(_counter) + ' of ' + str(movie_urls.shape[0]) + ' movies remaining')
+        movie_urls.shape[0]
+        
+        _counter += 1
+        
+        all_bar.progress(_counter/movie_urls.shape[0], text=progress_text_first)
 
     movie_details = pd.DataFrame(movie_details_list)
 
@@ -292,8 +297,8 @@ def get_movie_data(movie_urls, year):
     country_list = int_perf.loc[int_perf['country_url'].str.contains('https'), 'country_url']
     country_list = country_list.dropna()
     
-    progress_text = "Scraping in progress. Please wait."
-    my_bar = st.progress(0, text=progress_text)
+    progress_text = "Scraping country box office in progress. Please wait."
+    country_bo_bar = st.progress(0, text=progress_text)
     
     counter = 0
 
@@ -307,7 +312,7 @@ def get_movie_data(movie_urls, year):
         
         counter += 1
         
-        my_bar.progress(counter/country_list.shape[0], text=progress_text)
+        country_bo_bar.progress(counter/country_list.shape[0], text=progress_text)
 
     movie_details = movie_details.drop(columns=column_unroll)
     movie_details.to_csv(path + '/' + str(year) + '_movie_details.csv')

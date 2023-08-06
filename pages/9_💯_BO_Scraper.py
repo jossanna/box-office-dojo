@@ -278,8 +278,6 @@ def get_movie_data(movie_urls, year):
 
         movie_details_list.append(movie_dict)
         
-        movie_urls.shape[0]
-        
         _counter += 1
         
         all_bar.progress(_counter/movie_urls.shape[0], text=progress_text_first)

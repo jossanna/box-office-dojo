@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
-from main import load_movies, load_bo
+from streamlit_app import load_movies, load_bo
 
 st.set_page_config(page_title='Cast', page_icon='🎥',
                    layout="wide", initial_sidebar_state="auto", menu_items=None)

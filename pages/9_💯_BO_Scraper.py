@@ -6,14 +6,15 @@ import pandas as pd
 import os
 import time
 import streamlit as st
+import lxml
+
+
 
 st.set_page_config(page_title='Box Office Data Scraper', page_icon='💯', initial_sidebar_state="auto", menu_items=None)
 
 # Code
 user_agent = {'User-Agent': 'Mozilla/5.0'}
 url_base = 'https://www.the-numbers.com'
-
-timestamp = datetime.now().strftime('%Y%m%d')
 
 path = 'raw_data'
 
@@ -35,7 +36,7 @@ def get_movie_list(directory, min_rev):
     table_rows = []
 
     for year in range(len(directory)):
-        directory_page = requests.get(directory[year], headers=user_agent, verify=False)
+        directory_page = requests.get(directory[year], headers=user_agent)
         directory_page.encoding = 'utf-8'  # set correct encoding
 
         soup = BeautifulSoup(directory_page.text, 'lxml')
@@ -251,7 +252,7 @@ def get_movie_data(movie_urls, year):
 
     for movie in movie_urls:
         time.sleep(0.5)
-        response = requests.get(movie, headers=user_agent, verify=False)
+        response = requests.get(movie, headers=user_agent)
         response.encoding = 'utf-8'
         soup = BeautifulSoup(response.text, 'lxml')
 
@@ -298,7 +299,7 @@ def get_movie_data(movie_urls, year):
 
     for movie in country_list:
         time.sleep(0.5)
-        response = requests.get(movie, headers=user_agent, verify=False)
+        response = requests.get(movie, headers=user_agent)
         response.encoding = 'utf-8'
         soup = BeautifulSoup(response.text, 'lxml')
 
@@ -322,7 +323,7 @@ st.title('Movie Details')
 bo = pd.read_pickle('processed_data/bo.pkl.gz')
 latest_date = bo['date'].max()
 
-st.caption('Last Update:'+ str(latest_date))
+st.caption('Latest available Box Office Data: '+ str(latest_date))
 
 
 min = st.number_input('From Year', step=1)

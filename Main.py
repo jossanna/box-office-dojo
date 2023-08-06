@@ -83,7 +83,7 @@ def get_col_config():
     'day_kind': "Kind of Day",
     'weekday': "Weekday",
     'week_num': "Calendar Week",
-    'kind_num': "# Time Horizon"
+    'kind_num': "# Time Horizon",
     'metascore': 'Metacritic Score',
     'imdb_url': 'IMDB Link',
     'imdb_rating': 'IMDB Rating'

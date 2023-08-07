@@ -1,10 +1,10 @@
-from bs4 import BeautifulSoup
-import requests
 from datetime import datetime as dt
 from datetime import datetime
 import pandas as pd
 import os
 import time
+from bs4 import BeautifulSoup
+import requests
 import streamlit as st
 import lxml
 

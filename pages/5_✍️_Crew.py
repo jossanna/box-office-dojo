@@ -1,112 +1,166 @@
-import pandas as pd
-import numpy as np
-import plotly.express as px
-from main import load_movies, load_bo, get_col_config, get_auto_height
-
 import streamlit as st
 st.set_page_config(page_title='Crew', page_icon='🎥',
                    layout="wide", initial_sidebar_state="auto", menu_items=None)
+import pandas as pd
+import numpy as np
+import plotly.express as px
+from streamlit_app import load_movies, load_bo, get_col_config, get_auto_height
 
 bo = load_bo()
 movies = load_movies()
-config_cols, config_cols_labels, agg_dict = get_col_config()
+config_cols, cols_to_labels, agg_dict, multiselect_var, labels_to_cols, unroll_multiselect_var, cat_cols, metric_cols = get_col_config()
 
-
-_df_cols = ['movie_title', 'budget', 'opening_wknd_bo',
-            'legs', 'ww_bo', 'dom_bo', 'int_bo', 'dom_pct']
-    
-
-header, filter = st.columns([0.7, 0.3])
-with header:
-    st.title('🎥 Crew')
-    
 crew_list = ['Director', 'Screenwriter', 'Director of Photography', 'Producer', 'Executive Producer',
        'Editor', 'Composer','Production Designer',
        'Costume Designer', 'Story Creator',
        'Based on', 'Casting Director']
 
-with filter:
-    crew_kind_selector = st.selectbox('Select Crew Type', crew_list)
 
+# Header
 
-bo = pd.merge(bo, movies.loc[:, ['url', crew_kind_selector]], on='url')
+header, filter = st.columns([0.7, 0.3])
+
+header.title('🎥 Crew')
+crew_kind_selector = filter.selectbox('Select Crew Type', crew_list)
+
+# Dataframe Setup
+
+df_crew = movies.copy()
+
+df_crew = movies.explode(crew_kind_selector)
+df_crew = df_crew.loc[~(df_crew[crew_kind_selector] == ''), :]
+
+# Pages
 
 overview, breakdown, comparison = st.tabs(['Overview', 'Breakdown', 'Comparison'])
 
+# Overview
 
 with overview:
     
-    with st.expander('🔧 Customize'):
-        filters, metrics, vals = st.tabs(['Filters', 'Metrics', 'Values'])
-        
-        with filters:
-            filter_c1, filter_c2, filter_c3, filter_c4, filter_c5, filter_c6 = st.columns(6)
-            
-            with filter_c1:
-                genre_activator = st.checkbox('Genre')
-            with filter_c2:
-                mpaa_activator = st.checkbox('MPAA')
-            with filter_c3:
-                source_activator = st.checkbox('Source')
-            with filter_c4:
-                prod_activator = st.checkbox('Production Method')
-            with filter_c5:
-                producers_activator = st.checkbox('Prodcution Company')
-            
-            # Date Filter
-            st.slider('Select a range', movies['year'].min(), movies['year'].max(), (2023, 2023), 1)
-            
-            # Genre Filter
-            if genre_activator:
-                genre_selector = st.multiselect('Select genre', options=movies['genre'].unique(), default=list(movies['genre'].unique()))
-            
-            # Source Selector
-            if source_activator:
-                source_selector = st.multiselect('Select source', options=movies['source'].unique(), default=list(movies['source'].unique()))
-            
-            # MPAA Selector
-            if mpaa_activator:
-                mpaa_selector = st.multiselect('Select MPAA Rating', options=movies['mpaa'].unique(), default=list(movies['mpaa'].unique()))
-            
-            # Production Method
-            if prod_activator:
-                prod_selector = st.multiselect('Select Production Method', options=movies['prod_method'].unique(), default=list(movies['prod_method'].unique()))
-            
-            # Production Company
-            if producers_activator:
-                producers_selector = st.multiselect('Select Production Company', options=movies['producers'].unique(), default=list(movies['producers'].unique()))
-            
-            
-        with metrics:
-            metrics_selector = st.multiselect('Select Metrics', options=config_cols_labels.values(), default=list(config_cols_labels.values()))
-            agg_selector = st.selectbox('Select Aggregation', options=['Sum', 'Average'])
-            agg_selector = agg_dict[agg_selector]
-        
-        with vals:
-            col_o_val_1, col_o_val_2, col_o_val_3, col_o_val_4, col_o_val_5= st.columns(5)
+    df_overview = df_crew.copy()
+#    top = crew_details.groupby(crew_kind_selector)[_df_cols].agg(agg_selector).sort_values(sort_by_selector, ascending=False)[:row_num_selector]
+#    top = pd.merge(top, crew_details.groupby(crew_kind_selector)['movie_title'].agg(list), on=crew_kind_selector)
 
-            with col_o_val_1:
-                sort_by_selector = st.selectbox('Sort by', ['budget', 'opening_wknd_bo', 'ww_bo', 'dom_bo', 'int_bo'])
-
-            with col_o_val_2:
-                row_num_selector = st.slider('How many to show', min_value=25, max_value=250, value=50)
-                
-            with col_o_val_3:
-                metric_filter_selector = st.selectbox('Select Metric to filter', options=metrics_selector)
-            
-            with col_o_val_4:
-                value_filter_selector = st.slider('Select values', )
-            with col_o_val_5:    
-                n_movies_selector = st.slider('Minimum Number of Movies', min_value=1, max_value=10)
+    # top_formatted = top.style.format(thousands=" ", precision=0)
     
-    st.subheader(crew_kind_selector)
+    
+    def agg_filter_widget(df, variables, default_variables, metrics, filters):
+        with st.expander('🔧 Customize', expanded=False):
+            selected_cat_filters = {}
+            selected_metric_filters = {}
+            
+            st.write('##### Select variables')
+            variable_options = [cols_to_labels[key] for key in variables if key in cols_to_labels]
+            default_variables = [cols_to_labels[key] for key in default_variables if key in cols_to_labels]
+            cat_variables = []
+            default_cat_variables = []
+            metric_variables = []
+            default_metric_variables = []
+            
+            for variable in variable_options:
+                if labels_to_cols[variable] in cat_cols:
+                    cat_variables.append(variable)
+                elif labels_to_cols[variable] in metric_cols:
+                    metric_variables.append(variable)
+            
+            for variable in default_variables:
+                if labels_to_cols[variable] in cat_cols:
+                    default_cat_variables.append(variable)
+                elif labels_to_cols[variable] in metric_cols:
+                    default_metric_variables.append(variable)
+            
+            cat_variable_selector = st.multiselect('Select categorical variables', options=cat_variables, default=default_cat_variables)
+            metric_variable_selector = st.multiselect('Select metric variables', options=metric_variables, default=default_metric_variables) 
+            
+            variable_selector = cat_variable_selector + metric_variable_selector
+            
+            sort_var, sort_by, display_num, aggregation = st.columns(4)
+            
+            sort_var_selector = sort_var.selectbox('Select variable to sort by', options=metric_variable_selector, index=metric_variable_selector.index(cols_to_labels['ww_bo']))
+            sort_by_selector = sort_by.selectbox('Sort ascending or descending', options=['Ascending', 'Descending'], index=1)
+            if sort_by_selector == 'Descending':
+                sort_by_selector = False
+            else:
+                sort_by_selector = True
+            display_selector = display_num.slider('Select Number of results to show', min_value=25, max_value=500, step=25, value=50)
+            agg_func = aggregation.selectbox('Select how ot aggregate the results', options=agg_dict.keys(), index=list(agg_dict.values()).index('sum'))
+            
+            
+            df = df.loc[:, [crew_kind_selector] + [labels_to_cols[key] for key in variable_selector]]
+            
+            st.write('##### Filter categories')
+            cat_filter_options = [cols_to_labels[key] for key in filters if key in cols_to_labels]
+            
+            cat_filter_selector = st.multiselect('Select category filters', options=cat_filter_options, default=None)
+            
+            
+            for cat_filter_var in cat_filter_selector:
+                cat_filter_var = labels_to_cols[cat_filter_var]
+                left, right = st.columns((0.02, 0.98))
+                left.write("↳")
+                
+                if cat_filter_var in multiselect_var:
+                    options = df[cat_filter_var].unique()
+                    default_values = None
+                
+                if cat_filter_var in unroll_multiselect_var:
+                    options = df.explode(cat_filter_var)[cat_filter_var].unique()
+                    default_values=None
+                else:
+                    pass
+                selected_cat_filters[cat_filter_var+'_filter'] = right.multiselect('Select ' + cols_to_labels[cat_filter_var], options=options, default=default_values)
+            
+            st.write('##### Filter metrics')
+            metric_filter_options = [cols_to_labels[key] for key in filters if key in cols_to_labels]
+            
+            metric_filter_selector = st.multiselect('Select metrics filters', options=metric_filter_options, default=None)
+        
+        df = df.groupby(crew_kind_selector).agg(agg_dict[agg_func]).sort_values(labels_to_cols[sort_var_selector], ascending=sort_by_selector)
+        df = df[:50]
+        st.dataframe(width=None, data=df, hide_index=False, column_config=config_cols, use_container_width=True, height=get_auto_height(df))
+    
+    
+    
+    # Executing the Filter function
+    
+    variables = list(df_overview.columns)
+    variables.remove(crew_kind_selector)
+    
+    agg_filter_widget(df=df_overview, variables=variables, default_variables=['budget', 'ww_bo', 'opening_wknd_bo', 'legs', 'movie_title'], metrics=0, filters=(multiselect_var + unroll_multiselect_var))
 
 
-crew_details = movies.explode(crew_kind_selector)
-crew_details = crew_details.loc[~(crew_details[crew_kind_selector] == ''), :]
-crew_details = crew_details.sort_values('ww_bo', ascending=False)
 
-crew_directory = crew_details[crew_kind_selector].dropna().unique()
+
+
+
+
+    
+    
+        # with metrics:
+        #     metrics_selector = st.multiselect('Select Metrics', options=config_cols_labels.values(), default=list(config_cols_labels.values()))
+        #     agg_selector = st.selectbox('Select Aggregation', options=['Sum', 'Average'])
+        #     agg_selector = agg_dict[agg_selector]
+        
+        # with vals:
+        #     col_o_val_1, col_o_val_2, col_o_val_3, col_o_val_4, col_o_val_5= st.columns(5)
+
+        #     with col_o_val_1:
+        #         sort_by_selector = st.selectbox('Sort by', ['budget', 'opening_wknd_bo', 'ww_bo', 'dom_bo', 'int_bo'])
+
+        #     with col_o_val_2:
+        #         row_num_selector = st.slider('How many to show', min_value=25, max_value=250, value=50)
+                
+        #     with col_o_val_3:
+        #         metric_filter_selector = st.selectbox('Select Metric to filter', options=metrics_selector)
+            
+        #     with col_o_val_4:
+        #         value_filter_selector = st.slider('Select values', )
+        #     with col_o_val_5:    
+        #         n_movies_selector = st.slider('Minimum Number of Movies', min_value=1, max_value=10)
+
+
+
 
 
 with breakdown:
@@ -158,7 +212,7 @@ with breakdown:
     # Append the summary row to the DataFrame
     _df = _df.append(summary_row)
 
-    _df['dom_pct'] = _df['dom_pct'] * 100 
+    _df['dom_pct'] = _df['dom_pct'] * 100
 
 
     st.dataframe(width=None, data=_df, hide_index=True, column_config=config_cols, use_container_width=True, height=get_auto_height(_df))
@@ -240,29 +294,33 @@ with breakdown:
 
 #titles = bo['movie_title'].unique()
 
-
-with st.sidebar:
-    
-    franchise = st.sidebar.radio('Franchise vs. non-Franchise', ['All', 'Non-Franchise-Only'])
-    
-    if franchise == 'Non-Franchise-Only':
-        movies = movies.loc[movies['franchise'].isna(), :]
-        crew_details = crew_details.loc[crew_details['franchise'].isna(), :]
-
     
     
-crew_details['dom_pct'] = crew_details['dom_pct'] * 100
+# crew_details['dom_pct'] = crew_details['dom_pct'] * 100
 
-crew_member_list_filter = crew_details.groupby(crew_kind_selector)['movie_title'].transform(lambda lst: len(lst) >= n_movies_selector)
 
-crew_member_list_filter = crew_member_list_filter.fillna(False)
+# st.dataframe(top_formatted, column_config=config_cols,
+#                                     use_container_width=True, height=get_auto_height(top))
 
-crew_details = crew_details.loc[crew_member_list_filter, :]
 
-top = crew_details.groupby(crew_kind_selector)[_df_cols].agg(agg_selector).sort_values(sort_by_selector, ascending=False)[:row_num_selector]
-top = pd.merge(top, crew_details.groupby(crew_kind_selector)['movie_title'].agg(list), on=crew_kind_selector)
 
-top_formatted = top.style.format(thousands=" ", precision=0)
 
-st.dataframe(top_formatted, column_config=config_cols,
-                                    use_container_width=True, height=get_auto_height(top))
+# # old
+
+
+
+# crew_directory = crew_details[crew_kind_selector].dropna().unique()
+
+
+
+# crew_member_list_filter = crew_details.groupby(crew_kind_selector)['movie_title'].transform(lambda lst: len(lst) >= n_movies_selector)
+
+# crew_member_list_filter = crew_member_list_filter.fillna(False)
+
+
+
+# crew_details = crew_details.loc[crew_member_list_filter, :]
+
+
+
+# bo = pd.merge(bo, movies.loc[:, ['url', crew_kind_selector]], on='url')

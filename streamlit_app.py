@@ -32,7 +32,7 @@ load_bo()
 
 @st.cache_data
 def get_col_config():
-    config_cols_labels = {
+    cols_to_labels = {
     "dom_release_date": "DOM Release Date",
     'opening_wknd_bo': "DOM OW BO $",
     'int_bo': "INT BO $",
@@ -86,13 +86,39 @@ def get_col_config():
     'kind_num': "# Time Horizon",
     'metascore': 'Metacritic Score',
     'imdb_url': 'IMDB Link',
-    'imdb_rating': 'IMDB Rating'
+    'imdb_rating': 'IMDB Rating',
+    'Director': 'Director',
+    'Screenwriter':'Screenwriter',
+    'Director of Photography': 'Director of Photography',
+    'Producer': 'Producer',
+    'Executive Producer': 'Executive Producer',
+    'Editor': 'Editor',
+    'Composer': 'Composer',
+    'Production Designer': 'Production Designer',
+    'Costume Designer': 'Costume Designer',
+    'Story Creator':'Story Creator',
+    'Based on': 'Based on',
+    'Casting Director': 'Casting Director'
     }
     
-    variable_val_movies = ['est_profit', 'mpaa', ]
-    variable_val_bo = []
-    filter_val = ['mpaa']
-    agg_dict = {'Average': 'mean', 'Sum': 'sum'}
+    
+    multiselect_var = ['movie_title', 'mpaa',
+    'source', 'prod_method', 'creative_type', 'genre',
+    'market']
+    
+    unroll_multiselect_var = ['keywords', 'Director', 'Screenwriter', 'Director of Photography', 'Producer', 'Executive Producer',
+       'Editor', 'Composer','Production Designer',
+       'Costume Designer', 'Story Creator', 'Casting Director', 'producers', 'languages', 'prod_countries', 'franchise','Based on']
+    
+    other_cat_var = ['url', 'imdb_url']
+    
+    cat_cols = multiselect_var + unroll_multiselect_var + other_cat_var
+    
+    metric_cols = [key for key in cols_to_labels if key not in cat_cols]
+    
+    labels_to_cols = {value: key for key, value in cols_to_labels.items()}
+    
+    agg_dict = {'Average': 'mean', 'Sum': 'sum', 'Median': 'median', 'Min': 'min', 'Max': 'max', 'Std. Deviation': 'std'}
     
     
     config_cols = {
@@ -149,10 +175,22 @@ def get_col_config():
         'kind_num': st.column_config.NumberColumn('# Time Horizon'),
         'metascore': st.column_config.NumberColumn('Metacritic Score'),
         'imdb_url': st.column_config.LinkColumn('IMDB Link'),
-        'imdb_rating': st.column_config.NumberColumn('IMDB Rating')
+        'imdb_rating': st.column_config.NumberColumn('IMDB Rating'),
+        'Director': st.column_config.TextColumn('Director'),
+        'Screenwriter':st.column_config.TextColumn('Screenwriter'),
+        'Director of Photography': st.column_config.TextColumn('Director of Photography'),
+        'Producer': st.column_config.TextColumn('Producer'),
+        'Executive Producer': st.column_config.TextColumn('Executive Producer'),
+        'Editor': st.column_config.TextColumn('Editor'),
+        'Composer': st.column_config.TextColumn('Composer'),
+        'Production Designer': st.column_config.TextColumn('Production Designer'),
+        'Costume Designer': st.column_config.TextColumn('Costume Designer'),
+        'Story Creator': st.column_config.TextColumn('Story Creator'),
+        'Based on': st.column_config.TextColumn('Based on'),
+        'Casting Director': st.column_config.TextColumn('Casting Director')
         }
     
-    return config_cols, config_cols_labels, agg_dict
+    return config_cols, cols_to_labels, agg_dict, multiselect_var, labels_to_cols, unroll_multiselect_var, cat_cols, metric_cols
 
 get_col_config()
 

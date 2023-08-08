@@ -244,7 +244,7 @@ def agg_filter_widget(df, variables, default_variables, selector):
             sort_by_selector = False
         else:
             sort_by_selector = True
-        display_selector = display_num.slider('Select Number of results to show', min_value=25, max_value=500, step=25, value=50)
+        display_selector = display_num.slider('Select Number of results to show', min_value=10, max_value=500, step=5, value=25)
         agg_func = aggregation.selectbox('Select how ot aggregate the results', options=agg_dict.keys(), index=list(agg_dict.values()).index('sum'))
         
         metrics_col_selector = ([selector] + [labels_to_cols[key] for key in metric_variable_selector])

@@ -125,11 +125,12 @@ with overview:
             for key, value in selected_cat_simple_filters.items():
                 filter_conditions.append(df[key].isin(value))
             
+            
             for key, value in selected_cat_unroll_filters.items():
-                if value is None:
-                    filter_conditions.append(df[key].isna())
-                else:
-                    filter_conditions.append(df[key].apply(lambda x: any(option in x for option in value) if isinstance(x, list) else False))
+                filter_conditions.append(df[key].apply(lambda x: any(option in x for option in value) if isinstance(x, list) else (x is None or False)))
+            
+            # for key, value in selected_cat_unroll_filters.items():
+            #     filter_conditions.append(df[key].apply(lambda x: any(option in x for option in value) if isinstance(x, list) else x in value or x is None))
 
             st.write('##### Filter metrics')
             selected_range_filters = {}

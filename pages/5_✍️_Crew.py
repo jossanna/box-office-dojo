@@ -2,12 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
-from streamlit_app import load_movies, load_bo, get_col_config, get_auto_height
-
-@st.cache_data
-def convert_df(df):
-    # IMPORTANT: Cache the conversion to prevent computation on every rerun
-    return df.to_csv().encode('utf-8')
+from streamlit_app import load_movies, load_bo, get_col_config, get_auto_height, agg_filter_widget
 
 bo = load_bo()
 movies = load_movies()
@@ -42,160 +37,11 @@ overview, breakdown, comparison = st.tabs(['Overview', 'Breakdown', 'Comparison'
 with overview:
     
     df_overview = df_crew.copy()
-#    top = crew_details.groupby(crew_kind_selector)[_df_cols].agg(agg_selector).sort_values(sort_by_selector, ascending=False)[:row_num_selector]
-#    top = pd.merge(top, crew_details.groupby(crew_kind_selector)['movie_title'].agg(list), on=crew_kind_selector)
-
-    # top_formatted = top.style.format(thousands=" ", precision=0)
+    ov_variables = list(df_overview.columns)
+    ov_default_variables=['ww_bo', 'budget', 'opening_wknd_bo', 'legs', 'movie_title']
+    ov_variables.remove(crew_kind_selector)
     
-    
-    def agg_filter_widget(df, variables, default_variables):
-        with st.expander('🔧 Customize', expanded=False):
-            st.write('##### Select variables')
-            variable_options = [cols_to_labels[key] for key in variables if key in cols_to_labels]
-            default_variables = [cols_to_labels[key] for key in default_variables if key in cols_to_labels]
-            cat_variables = []
-            default_cat_variables = []
-            metric_variables = []
-            default_metric_variables = []
-            filter_conditions = []
-            
-            # Column Selection
-            
-            for variable in variable_options:
-                if labels_to_cols[variable] in cat_cols:
-                    cat_variables.append(variable)
-                elif labels_to_cols[variable] in metric_cols:
-                    metric_variables.append(variable)
-            
-            for variable in default_variables:
-                if labels_to_cols[variable] in cat_cols:
-                    default_cat_variables.append(variable)
-                elif labels_to_cols[variable] in metric_cols:
-                    default_metric_variables.append(variable)
-            
-            cat_variable_selector = st.multiselect('Select categorical variables', options=cat_variables, default=default_cat_variables)
-            metric_variable_selector = st.multiselect('Select metric variables', options=metric_variables, default=default_metric_variables) 
-            
-            variable_selector = cat_variable_selector + metric_variable_selector
-            
-            
-            # Display Settings
-            
-            sort_var, sort_by, display_num, aggregation = st.columns(4)
-            
-            sort_var_selector = sort_var.selectbox('Select variable to sort by', options=metric_variable_selector, index=metric_variable_selector.index(cols_to_labels['ww_bo']))
-            sort_by_selector = sort_by.selectbox('Sort ascending or descending', options=['Ascending', 'Descending'], index=1)
-            if sort_by_selector == 'Descending':
-                sort_by_selector = False
-            else:
-                sort_by_selector = True
-            display_selector = display_num.slider('Select Number of results to show', min_value=25, max_value=500, step=25, value=50)
-            agg_func = aggregation.selectbox('Select how ot aggregate the results', options=agg_dict.keys(), index=list(agg_dict.values()).index('sum'))
-            
-            metrics_col_selector = ([crew_kind_selector] + [labels_to_cols[key] for key in metric_variable_selector])
-            cat_col_selector = ([crew_kind_selector] + [labels_to_cols[key] for key in cat_variable_selector])
-            
-            st.write('##### Filter categories')
-            
-            cat_filter_options = cat_variables.copy()
-            
-            cat_filter_selector = st.multiselect('Select category filters', options=cat_filter_options, default=None)
-            
-            selected_cat_simple_filters = {}
-            selected_cat_unroll_filters = {}
-            
-            for cat_filter_var in cat_filter_selector:
-                cat_filter_var = labels_to_cols[cat_filter_var]
-                left, right = st.columns((0.02, 0.98))
-                left.write("↳")
-                
-                if cat_filter_var in multiselect_var:
-                    options = df[cat_filter_var].unique()
-                    default_values = None
-                    selected_cat_simple_filters[cat_filter_var] = right.multiselect('Select ' + cols_to_labels[cat_filter_var], options=options, default=default_values)
-                    
-                
-                if cat_filter_var in unroll_multiselect_var:
-                    options = df.explode(cat_filter_var)[cat_filter_var].unique()
-                    default_values=None
-                    selected_cat_unroll_filters[cat_filter_var] = right.multiselect('Select ' + cols_to_labels[cat_filter_var], options=options, default=default_values)
-                else:
-                    pass
-            
-            for key, value in selected_cat_simple_filters.items():
-                filter_conditions.append(df[key].isin(value))
-            
-            
-            for key, value in selected_cat_unroll_filters.items():
-                filter_conditions.append(df[key].apply(lambda x: any(option in x for option in value) if isinstance(x, list) else (x is None or False)))
-            
-            # for key, value in selected_cat_unroll_filters.items():
-            #     filter_conditions.append(df[key].apply(lambda x: any(option in x for option in value) if isinstance(x, list) else x in value or x is None))
-
-            st.write('##### Filter metrics')
-            selected_range_filters = {}
-            
-            metric_filter_options = metric_variables.copy()
-            default_values=None
-            
-            metric_filter_selector = st.multiselect('Select metric variables', options=metric_variables, default=default_values) 
-            
-            for metric_filter_var in metric_filter_selector:
-                metric_filter_var = labels_to_cols[metric_filter_var]
-                left, right = st.columns((0.02, 0.98))
-                left.write("↳")
-            
-                if metric_filter_var in range_var:
-                    _min =  df[metric_filter_var].min()
-                    _max = df[metric_filter_var].max()
-                    default_values = None
-                    
-                    selected_range_filters[metric_filter_var] = right.slider('Select ' + cols_to_labels[metric_filter_var], value=(_min, _max), min_value=_min, max_value=_max)
-            for key, value in selected_range_filters.items():
-                filter_conditions.append(df[key].between(*value))
-                        
-        # aggregate and sort results
-        if len(filter_conditions) != 0:
-            combined_filter = pd.concat(filter_conditions, axis=1).all(axis=1)
-        else:
-            combined_filter =  slice(None)
-        df_metrics = df.loc[combined_filter, metrics_col_selector].groupby(crew_kind_selector).agg(agg_dict[agg_func]).sort_values(labels_to_cols[sort_var_selector], ascending=sort_by_selector)
-        df_categories = df.loc[combined_filter, cat_col_selector].groupby(crew_kind_selector).agg(list)
-        
-        
-        
-        df = pd.merge(df_metrics, df_categories, on=crew_kind_selector)
-        
-        # Get display num
-        
-        total_results = df.shape[0]
-        
-        if df.shape[0] > display_selector:
-            df = df[:display_selector]
-        else:
-            pass
-        
-        num_results = df.shape[0]
-        
-        filter_summary = 'Showing ' + str(num_results) + ' of ' + str(total_results) + ' results. Active Filters: ' + ', '.join([str(value) for value in selected_cat_simple_filters.values()])
-        
-        st.caption(filter_summary)
-        
-        st.dataframe(width=None, data=df, hide_index=False, column_config=config_cols, use_container_width=True, height=get_auto_height(df))
-        
-        
-        csv = convert_df(df)
-        
-        st.download_button(label='Download results as csv', data=csv, file_name=crew_kind_selector+'_filter_results.csv', mime='text/csv')
-    
-    
-    
-    # Executing the Filter function
-    
-    variables = list(df_overview.columns)
-    variables.remove(crew_kind_selector)
-    
-    agg_filter_widget(df=df_overview, variables=variables, default_variables=['budget', 'ww_bo', 'opening_wknd_bo', 'legs', 'movie_title'])
+    agg_filter_widget(df=df_overview, variables=ov_variables, default_variables=ov_default_variables, selector=crew_kind_selector)
 
 
 

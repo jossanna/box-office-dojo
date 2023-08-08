@@ -1,10 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-st.set_page_config(
-    page_title="Hello",
-    page_icon="🏡",
-)
+st.set_page_config(page_title='Box Office Dojo', page_icon='🎬', layout="wide", initial_sidebar_state="auto", menu_items=None)
 
 st.write("# Welcome to Streamlit! 👋")
 
@@ -98,7 +95,8 @@ def get_col_config():
     'Costume Designer': 'Costume Designer',
     'Story Creator':'Story Creator',
     'Based on': 'Based on',
-    'Casting Director': 'Casting Director'
+    'Casting Director': 'Casting Director',
+    'month': 'Month DOM Release Date'
     }
     
     
@@ -110,6 +108,8 @@ def get_col_config():
        'Editor', 'Composer','Production Designer',
        'Costume Designer', 'Story Creator', 'Casting Director', 'producers', 'languages', 'prod_countries', 'franchise','Based on']
     
+    range_var = ['opening_wknd_bo', 'legs', 'dom_pct', 'adj_dom_bo', 'budget', 'runtime', 'dom_bo', 'int_bo', 'ww_bo', 'tot_dom_vid_sales', 'year', 'prod_multiple', 'n_opening_theaters', 'n_max_theaters', 'weeks_average_run_theater', 'imdb_rating', 'metascore', 'dom_release_date_weekday', 'dom_release_date_week_num', 'diff_dom_video_release', 'china_bo', 'int_ex_china_bo', 'est_profit', 'dom_release_date', 'month', 'video_release_date']
+    
     other_cat_var = ['url', 'imdb_url']
     
     cat_cols = multiselect_var + unroll_multiselect_var + other_cat_var
@@ -119,6 +119,7 @@ def get_col_config():
     labels_to_cols = {value: key for key, value in cols_to_labels.items()}
     
     agg_dict = {'Average': 'mean', 'Sum': 'sum', 'Median': 'median', 'Min': 'min', 'Max': 'max', 'Std. Deviation': 'std'}
+    
     
     
     config_cols = {
@@ -141,7 +142,7 @@ def get_col_config():
         'opening_to_budget': st.column_config.NumberColumn('Opening-to-Budget-Ratio', help='Ratio of DOM Opening Weekend to Budget'),
         'n_max_theaters': st.column_config.NumberColumn('Max # of Theaters', help='Maximum number of Theaters'),
         'prod_multiple': st.column_config.NumberColumn('Production Multiple', help='Worldwide Box Office relative to budget'),
-        'source': st.column_config.TextColumn('Source', help='What is the source of the movie'),
+        'source': st.column_config.ListColumn('Source', help='What is the source of the movie'),
         'prod_method': st.column_config.TextColumn('Production Method', help='What is the source of the production method'),
         'producers': st.column_config.ListColumn('Production Companies'),
         'prod_countries': st.column_config.ListColumn('Production Countries'),
@@ -187,10 +188,11 @@ def get_col_config():
         'Costume Designer': st.column_config.TextColumn('Costume Designer'),
         'Story Creator': st.column_config.TextColumn('Story Creator'),
         'Based on': st.column_config.TextColumn('Based on'),
-        'Casting Director': st.column_config.TextColumn('Casting Director')
+        'Casting Director': st.column_config.TextColumn('Casting Director'),
+        'month': st.column_config.DateColumn('Month DOM Release Date')
         }
     
-    return config_cols, cols_to_labels, agg_dict, multiselect_var, labels_to_cols, unroll_multiselect_var, cat_cols, metric_cols
+    return config_cols, cols_to_labels, agg_dict, multiselect_var, labels_to_cols, unroll_multiselect_var, cat_cols, metric_cols, range_var
 
 get_col_config()
 

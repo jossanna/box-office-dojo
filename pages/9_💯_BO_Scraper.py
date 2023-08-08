@@ -8,10 +8,6 @@ import requests
 import streamlit as st
 import lxml
 
-
-
-st.set_page_config(page_title='Box Office Data Scraper', page_icon='💯', initial_sidebar_state="auto", menu_items=None)
-
 # Code
 user_agent = {'User-Agent': 'Mozilla/5.0'}
 url_base = 'https://www.the-numbers.com'

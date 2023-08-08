@@ -4,8 +4,6 @@ import numpy as np
 import plotly.express as px
 from streamlit_app import load_movies, load_bo, get_col_config, get_auto_height
 
-st.set_page_config(page_title='Compare', page_icon='🔁', layout="wide", initial_sidebar_state="auto", menu_items=None)
-
 bo = load_bo()
 movies = load_movies()
 config_cols = get_col_config()

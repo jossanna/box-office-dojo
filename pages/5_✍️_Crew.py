@@ -158,8 +158,6 @@ with overview:
         df_metrics = df.loc[combined_filter, metrics_col_selector].groupby(crew_kind_selector).agg(agg_dict[agg_func]).sort_values(labels_to_cols[sort_var_selector], ascending=sort_by_selector)
         df_categories = df.loc[combined_filter, cat_col_selector].groupby(crew_kind_selector).agg(list)
         
-        
-        
         df = pd.merge(df_metrics, df_categories, on=crew_kind_selector)
         
         # Get display num

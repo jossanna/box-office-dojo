@@ -2,11 +2,11 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
-from streamlit_app import load_movies, load_bo, get_col_config, get_auto_height, agg_filter_widget
+from streamlit_app import load_movies, load_bo, get_col_config, get_auto_height, data_processor
 
 bo = load_bo()
 movies = load_movies()
-config_cols, cols_to_labels, agg_dict, multiselect_var, labels_to_cols, unroll_multiselect_var, cat_cols, metric_cols, range_var = get_col_config()
+config_cols, cols_to_labels, agg_dict, multiselect_var, labels_to_cols, unroll_multiselect_var, cat_cols, metric_cols, range_var, data_options = get_col_config()
 
 crew_list = ['Director', 'Screenwriter', 'Director of Photography', 'Producer', 'Executive Producer',
        'Editor', 'Composer','Production Designer',
@@ -35,59 +35,41 @@ overview, breakdown, comparison = st.tabs(['Overview', 'Breakdown', 'Comparison'
 # Overview
 
 with overview:
-    
     df_overview = df_crew.copy()
     ov_variables = list(df_overview.columns)
     ov_default_variables=['ww_bo', 'budget', 'opening_wknd_bo', 'legs', 'movie_title']
     ov_variables.remove(crew_kind_selector)
     
-    agg_filter_widget(df=df_overview, variables=ov_variables, default_variables=ov_default_variables, selector=crew_kind_selector)
-
-
-
-
-    
-    
-        # with metrics:
-        #     metrics_selector = st.multiselect('Select Metrics', options=config_cols_labels.values(), default=list(config_cols_labels.values()))
-        #     agg_selector = st.selectbox('Select Aggregation', options=['Sum', 'Average'])
-        #     agg_selector = agg_dict[agg_selector]
-        
-        # with vals:
-        #     col_o_val_1, col_o_val_2, col_o_val_3, col_o_val_4, col_o_val_5= st.columns(5)
-
-        #     with col_o_val_1:
-        #         sort_by_selector = st.selectbox('Sort by', ['budget', 'opening_wknd_bo', 'ww_bo', 'dom_bo', 'int_bo'])
-
-        #     with col_o_val_2:
-        #         row_num_selector = st.slider('How many to show', min_value=25, max_value=250, value=50)
-                
-        #     with col_o_val_3:
-        #         metric_filter_selector = st.selectbox('Select Metric to filter', options=metrics_selector)
-            
-        #     with col_o_val_4:
-        #         value_filter_selector = st.slider('Select values', )
-        #     with col_o_val_5:    
-        #         n_movies_selector = st.slider('Minimum Number of Movies', min_value=1, max_value=10)
-
-
-
-
+    data_processor(df=df_overview, variables=ov_variables, default_variables=ov_default_variables, selector=crew_kind_selector, key='overview', type='overview', data_select=['movie_data', 'international_data'])
 
 with breakdown:
+    df_breakdown = df_crew.copy()
+    br_variables = list(df_breakdown.columns)
+    br_default_variables=['ww_bo', 'budget', 'opening_wknd_bo', 'legs', 'movie_title']
+    br_variables.remove(crew_kind_selector)
     
-    with st.expander('🔧 Customize'):
+    data_processor(df=df_breakdown, variables=br_variables, default_variables=br_default_variables, selector=crew_kind_selector, key='breakdown', type='breakdown', data_select=['movie_data', 'international_data', 'bo_data'])
+    
+    df_bo = bo.copy()
+    
+    indiv_movie_selector = ['The Dark Knight (2008)', 'Oppenheimer (2023)'] # Temporary, remove once brought over to main function
+    df_bo = df_bo.loc[df_bo['movie_title'].isin(indiv_movie_selector), :]
+    br_bo_variables = list(df_bo.columns)
+    br_bo__default_variables = list(df_bo.columns)
+    
+    
+    
+    
+    with st.expander('🔧 Customize Box Office Data'):
         
-        col_b_1, col_b_2, col_b_3 = st.columns(3)
+        indiv_movie_selector = ['The Dark Knight (2008)', 'Oppenheimer (2023)'] # Temporary, remove once brought over to main function
         
-        with col_b_1:
-            crew_member_selector = st.selectbox('Select ' + crew_kind_selector, list(crew_directory))
-
-        titles = movies.loc[movies[crew_kind_selector].apply(lambda x:  isinstance(x, list) and crew_member_selector in x), 'movie_title'].unique()
+        df_bo.loc[df_bo['movie_title'].isin(indiv_movie_selector), :]
         
-        with col_b_2:
-            movie_selector = st.multiselect('Select Movie', list(titles), default=titles)
-
+        bo_selectbox = ['rank', 'gross', 'pct_change', 'theaters', 'per_theater',
+                        'total_gross', 'kind', 'kind_num', 'pct_lw', 'market', 'movie_id',
+                        'year', 'movie_title', 'day_kind', 'weekday', 'week_num']
+        
         # Filter available markets based on the selected movie
         try:
             available_markets = bo.loc[bo[crew_kind_selector].apply(lambda x:  isinstance(
@@ -203,7 +185,34 @@ with breakdown:
 
 
 
-#titles = bo['movie_title'].unique()
+
+
+
+    
+    
+        # with metrics:
+        #     metrics_selector = st.multiselect('Select Metrics', options=config_cols_labels.values(), default=list(config_cols_labels.values()))
+        #     agg_selector = st.selectbox('Select Aggregation', options=['Sum', 'Average'])
+        #     agg_selector = agg_dict[agg_selector]
+        
+        # with vals:
+        #     col_o_val_1, col_o_val_2, col_o_val_3, col_o_val_4, col_o_val_5= st.columns(5)
+
+        #     with col_o_val_1:
+        #         sort_by_selector = st.selectbox('Sort by', ['budget', 'opening_wknd_bo', 'ww_bo', 'dom_bo', 'int_bo'])
+
+        #     with col_o_val_2:
+        #         row_num_selector = st.slider('How many to show', min_value=25, max_value=250, value=50)
+                
+        #     with col_o_val_3:
+        #         metric_filter_selector = st.selectbox('Select Metric to filter', options=metrics_selector)
+            
+        #     with col_o_val_4:
+        #         value_filter_selector = st.slider('Select values', )
+        #     with col_o_val_5:    
+        #         n_movies_selector = st.slider('Minimum Number of Movies', min_value=1, max_value=10)
+
+
 
     
     
@@ -212,26 +221,3 @@ with breakdown:
 
 # st.dataframe(top_formatted, column_config=config_cols,
 #                                     use_container_width=True, height=get_auto_height(top))
-
-
-
-
-# # old
-
-
-
-# crew_directory = crew_details[crew_kind_selector].dropna().unique()
-
-
-
-# crew_member_list_filter = crew_details.groupby(crew_kind_selector)['movie_title'].transform(lambda lst: len(lst) >= n_movies_selector)
-
-# crew_member_list_filter = crew_member_list_filter.fillna(False)
-
-
-
-# crew_details = crew_details.loc[crew_member_list_filter, :]
-
-
-
-# bo = pd.merge(bo, movies.loc[:, ['url', crew_kind_selector]], on='url')

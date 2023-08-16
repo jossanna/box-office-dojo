@@ -1,3 +1,4 @@
+import select
 import streamlit as st
 import pandas as pd
 
@@ -101,8 +102,12 @@ def get_col_config():
     
     
     multiselect_var = ['movie_title', 'mpaa',
-    'source', 'prod_method', 'creative_type', 'genre',
-    'market']
+    'source', 'prod_method', 'creative_type', 'genre']
+    
+    selectbox_var = ['market', ]
+    
+    
+    
     
     unroll_multiselect_var = ['keywords', 'Director', 'Screenwriter', 'Director of Photography', 'Producer', 'Executive Producer',
        'Editor', 'Composer','Production Designer',
@@ -118,9 +123,9 @@ def get_col_config():
     
     labels_to_cols = {value: key for key, value in cols_to_labels.items()}
     
-    agg_dict = {'Average': 'mean', 'Sum': 'sum', 'Median': 'median', 'Min': 'min', 'Max': 'max', 'Std. Deviation': 'std'}
+    agg_dict = {'Average': 'mean', 'Sum': 'sum', 'Median': 'median', 'Min': 'min', 'Max': 'max', 'Std. Deviation': 'std', 'Count': 'count'}
     
-    
+    data_options = {'movie_data': 'Movie Data', 'bo_data': 'Box Office Data', 'international_data': 'International Data'}
     
     config_cols = {
         "dom_release_date": st.column_config.DateColumn("DOM Release Date", format="YYYY-MM-DD"),
@@ -192,7 +197,7 @@ def get_col_config():
         'month': st.column_config.DateColumn('Month DOM Release Date')
         }
     
-    return config_cols, cols_to_labels, agg_dict, multiselect_var, labels_to_cols, unroll_multiselect_var, cat_cols, metric_cols, range_var
+    return config_cols, cols_to_labels, agg_dict, multiselect_var, labels_to_cols, unroll_multiselect_var, cat_cols, metric_cols, range_var, data_options
 
 get_col_config()
 
@@ -202,127 +207,45 @@ def convert_df(df):
     return df.to_csv().encode('utf-8')
 
 
-def agg_filter_widget(df, variables, default_variables, selector):
-    config_cols, cols_to_labels, agg_dict, multiselect_var, labels_to_cols, unroll_multiselect_var, cat_cols, metric_cols, range_var = get_col_config()
-    with st.expander('🔧 Customize', expanded=False):
-        st.write('##### Select variables')
-        variable_options = [cols_to_labels[key] for key in variables if key in cols_to_labels]
-        default_variables = [cols_to_labels[key] for key in default_variables if key in cols_to_labels]
-        cat_variables = []
-        default_cat_variables = []
-        metric_variables = []
-        default_metric_variables = []
-        filter_conditions = []
-        filter_summary = []
-        
-        # Column Selection
-        
-        for variable in variable_options:
-            if labels_to_cols[variable] in cat_cols:
-                cat_variables.append(variable)
-            elif labels_to_cols[variable] in metric_cols:
-                metric_variables.append(variable)
-        
-        for variable in default_variables:
-            if labels_to_cols[variable] in cat_cols:
-                default_cat_variables.append(variable)
-            elif labels_to_cols[variable] in metric_cols:
-                default_metric_variables.append(variable)
-        
-        cat_variable_selector = st.multiselect('Select categorical variables', options=cat_variables, default=default_cat_variables)
-        metric_variable_selector = st.multiselect('Select metric variables', options=metric_variables, default=default_metric_variables) 
-        
-        variable_selector = cat_variable_selector + metric_variable_selector
-        
-        # Display Settings
-        
-        sort_var, sort_by, display_num, aggregation = st.columns(4)
-        
-        sort_var_selector = sort_var.selectbox('Select variable to sort by', options=metric_variable_selector, index=0)
-        sort_by_selector = sort_by.selectbox('Sort ascending or descending', options=['Ascending', 'Descending'], index=1)
-        if sort_by_selector == 'Descending':
-            sort_by_selector = False
-        else:
-            sort_by_selector = True
-        display_selector = display_num.slider('Select Number of results to show', min_value=10, max_value=500, step=5, value=25)
-        agg_func = aggregation.selectbox('Select how ot aggregate the results', options=agg_dict.keys(), index=list(agg_dict.values()).index('sum'))
-        
-        metrics_col_selector = ([selector] + [labels_to_cols[key] for key in metric_variable_selector])
-        cat_col_selector = ([selector] + [labels_to_cols[key] for key in cat_variable_selector])
-        
-        st.write('##### Filter categories')
-        
-        cat_filter_options = cat_variables.copy()
-        
-        cat_filter_selector = st.multiselect('Select category filters', options=cat_filter_options, default=None)
-        
-        selected_cat_simple_filters = {}
-        selected_cat_unroll_filters = {}
-        
-        for cat_filter_var in cat_filter_selector:
-            cat_filter_var = labels_to_cols[cat_filter_var]
-            left, right = st.columns((0.02, 0.98))
-            left.write("↳")
-            
-            if cat_filter_var in multiselect_var:
-                options = df[cat_filter_var].unique()
-                default_values = None
-                selected_cat_simple_filters[cat_filter_var] = right.multiselect('Select ' + cols_to_labels[cat_filter_var], options=options, default=default_values)
-                
-            
-            if cat_filter_var in unroll_multiselect_var:
-                options = df.explode(cat_filter_var)[cat_filter_var].unique()
-                default_values=None
-                selected_cat_unroll_filters[cat_filter_var] = right.multiselect('Select ' + cols_to_labels[cat_filter_var], options=options, default=default_values)
-            else:
-                pass
-        
-        for key, value in selected_cat_simple_filters.items():
-            filter_conditions.append(df[key].isin(value))
-            filter_summary.append(cols_to_labels[key] + ': ' + ', '.join(str(val) if val is not None else 'None' for val in value))
 
-        
-        for key, value in selected_cat_unroll_filters.items():
-            filter_conditions.append(df[key].apply(lambda x: any(option in x for option in value) if isinstance(x, list) else (x is None or False)))
-            filter_summary.append(cols_to_labels[key] + ': ' + ', '.join(str(val) if val is not None else 'None' for val in value))
+def get_csv_download(df, selector):
+    csv = convert_df(df)
+    
+    st.download_button(label='Download results as csv', data=csv, file_name=selector+'_filter_results.csv', mime='text/csv')
 
-        
-        st.write('##### Filter metrics')
-        selected_range_filters = {}
-        
-        metric_filter_options = metric_variables.copy()
-        default_values=None
-        
-        metric_filter_selector = st.multiselect('Select metric variables', options=metric_variables, default=default_values) 
-        
-        for metric_filter_var in metric_filter_selector:
-            metric_filter_var = labels_to_cols[metric_filter_var]
-            left, right = st.columns((0.02, 0.98))
-            left.write("↳")
-        
-            if metric_filter_var in range_var:
-                _min =  df[metric_filter_var].min()
-                _max = df[metric_filter_var].max()
-                default_values = None
-                
-                selected_range_filters[metric_filter_var] = right.slider('Select ' + cols_to_labels[metric_filter_var], value=(_min, _max), min_value=_min, max_value=_max)
+def filter_preview(df, filter_summary, display_selector):
+    total_results = df.shape[0]
+    
+    if df.shape[0] > display_selector:
+        df = df[:display_selector]
+    else:
+        pass
+    
+    num_results = df.shape[0]
+    
+    results_summary = 'Showing ' + str(num_results) + ' of ' + str(total_results) + ' results'
+    
+    if len(filter_summary) != 0:
+        filter_summary_text = '. Active Filters: ' + ' · '.join(filter_summary)
+    else:
+        filter_summary_text = ''
+    
+    filter_summary_text = ''
+    
+    st.caption(results_summary + filter_summary_text)
+    
+    return df
 
-        for key, value in selected_range_filters.items():
-            filter_conditions.append(df[key].between(*value))
-            filter_summary.append(cols_to_labels[key] + ': ' + ' – '.join(str(item) for item in value))
-
-
-                    
-    # aggregate and sort results
+def agg_filter_func(df, selector, agg_dict, labels_to_cols, filter_conditions, sort_var_selector, sort_by_selector, agg_func, metrics_col_selector, cat_col_selector):
     if len(filter_conditions) != 0:
         combined_filter = pd.concat(filter_conditions, axis=1).all(axis=1)
     else:
         combined_filter =  slice(None)
+    
     df_metrics = df.loc[combined_filter, metrics_col_selector].groupby(selector).agg(agg_dict[agg_func]).sort_values(labels_to_cols[sort_var_selector], ascending=sort_by_selector)
     
     df_categories = df.loc[combined_filter, cat_col_selector].groupby(selector).agg(list)
     
-
     for col in df_categories.columns:
         if pd.api.types.is_categorical_dtype(df_categories[col]):
             df_categories[col] = df_categories[col].astype('object')
@@ -350,37 +273,248 @@ def agg_filter_widget(df, variables, default_variables, selector):
             df_categories.at[index, col] = list_result
     
     df = pd.merge(df_metrics, df_categories, on=selector)
-    
-    # Get display num
-    
-    total_results = df.shape[0]
-    
-    if df.shape[0] > display_selector:
-        df = df[:display_selector]
-    else:
-        pass
-    
-    num_results = df.shape[0]
-    
-    results_summary = 'Showing ' + str(num_results) + ' of ' + str(total_results) + ' results'
-    
-    if len(filter_summary) != 0:
-        filter_summary_text = '. Active Filters: ' + ' · '.join(filter_summary)
-    else:
-        filter_summary_text = ''
-    
-    filter_summary_text = ''
-    
-    st.caption(results_summary + filter_summary_text)
-    
-    st.dataframe(width=None, data=df, hide_index=False, column_config=config_cols, use_container_width=True, height=get_auto_height(df))
-    
-    
-    csv = convert_df(df)
-    
-    st.download_button(label='Download results as csv', data=csv, file_name=selector+'_filter_results.csv', mime='text/csv')
+    return df
 
+def metric_filter_selection(df, cols_to_labels, labels_to_cols, range_var, metric_variables, filter_conditions, filter_summary, key):
+    st.write('##### Filter metrics')
+    selected_range_filters = {}
+        
+    metric_filter_options = metric_variables.copy()
+    default_values=None
+        
+    metric_filter_selector = st.multiselect('Select metric variables', options=metric_variables, default=default_values, key='metric_filter_selector'+key) 
+        
+    for metric_filter_var in metric_filter_selector:
+        metric_filter_var = labels_to_cols[metric_filter_var]
+        left, right = st.columns((0.02, 0.98))
+        left.write("↳")
+        
+        if metric_filter_var in range_var:
+            _min =  df[metric_filter_var].min()
+            _max = df[metric_filter_var].max()
+            default_values = None
+                
+            selected_range_filters[metric_filter_var] = right.slider('Select ' + cols_to_labels[metric_filter_var], value=(_min, _max), min_value=_min, max_value=_max, key=metric_filter_var+key)
+
+    for key, value in selected_range_filters.items():
+        filter_conditions.append(df[key].between(*value))
+        filter_summary.append(cols_to_labels[key] + ': ' + ' – '.join(str(item) for item in value))
+
+def cat_filter_selection(df, cols_to_labels, multiselect_var, labels_to_cols, unroll_multiselect_var, cat_variables, filter_conditions, filter_summary, key):
+    st.write('##### Filter categories')
+        
+    cat_filter_options = cat_variables.copy()
+        
+    cat_filter_selector = st.multiselect('Select category filters', options=cat_filter_options, default=None, key='cat_filter_selector'+key)
+        
+    selected_cat_simple_filters = {}
+    selected_cat_unroll_filters = {}
+        
+    for cat_filter_var in cat_filter_selector:
+        cat_filter_var = labels_to_cols[cat_filter_var]
+        left, right = st.columns((0.02, 0.98))
+        left.write("↳")
+            
+        if cat_filter_var in multiselect_var:
+            options = df[cat_filter_var].unique()
+            default_values = None
+            selected_cat_simple_filters[cat_filter_var] = right.multiselect('Select ' + cols_to_labels[cat_filter_var], options=options, default=default_values, key=cat_filter_var+key)
+                
+            
+        if cat_filter_var in unroll_multiselect_var:
+            options = df.explode(cat_filter_var)[cat_filter_var].unique()
+            default_values=None
+            selected_cat_unroll_filters[cat_filter_var] = right.multiselect('Select ' + cols_to_labels[cat_filter_var], options=options, default=default_values, key=cat_filter_var+key)
+        else:
+            pass
+        
+    for key, value in selected_cat_simple_filters.items():
+        filter_conditions.append(df[key].isin(value))
+        filter_summary.append(cols_to_labels[key] + ': ' + ', '.join(str(val) if val is not None else 'None' for val in value))
+
+        
+    for key, value in selected_cat_unroll_filters.items():
+        filter_conditions.append(df[key].apply(lambda x: any(option in x for option in value) if isinstance(x, list) else (x is None and None in value)))
+        filter_summary.append(cols_to_labels[key] + ': ' + ', '.join(str(val) if val is not None else 'None' for val in value))
+
+def display_selection(selector, agg_dict, labels_to_cols, cat_variable_selector, metric_variable_selector, key, type):
+    sort_var, sort_by, display_num, aggregation = st.columns(4)
+        
+    sort_var_selector = sort_var.selectbox('Select variable to sort by', options=metric_variable_selector, index=0, key='sort_var_selector'+key)
+    sort_by_selector = sort_by.selectbox('Sort ascending or descending', options=['Ascending', 'Descending'], index=1, key='sort_by_selector'+key)
+    if sort_by_selector == 'Descending':
+        sort_by_selector = False
+    else:
+        sort_by_selector = True
+    display_selector = display_num.slider('Select Number of results to show', min_value=10, max_value=500, step=5, value=25, key='display_selector'+key)
+    
+    if type == 'breakdown':
+        agg_func = None
+    else:
+        agg_func = aggregation.selectbox('Select how to aggregate the results', options=agg_dict.keys(), index=list(agg_dict.values()).index('sum'), key='agg_func'+key)        
+        
+    metrics_col_selector = ([selector] + [labels_to_cols[key] for key in metric_variable_selector])
+    cat_col_selector = ([selector] + [labels_to_cols[key] for key in cat_variable_selector])
+    return sort_var_selector, sort_by_selector, display_selector, agg_func, metrics_col_selector, cat_col_selector
+
+def var_selection(variables, default_variables, cols_to_labels, labels_to_cols, cat_cols, metric_cols, key):
+    st.write('##### Select variables')
+    variable_options = [cols_to_labels[key] for key in variables if key in cols_to_labels]
+    default_variables = [cols_to_labels[key] for key in default_variables if key in cols_to_labels]
+    cat_variables = []
+    default_cat_variables = []
+    metric_variables = []
+    default_metric_variables = []
+    filter_conditions = []
+    filter_summary = []
+    
+    
+    for variable in variable_options:
+        if labels_to_cols[variable] in cat_cols:
+            cat_variables.append(variable)
+        elif labels_to_cols[variable] in metric_cols:
+            metric_variables.append(variable)
+        
+    for variable in default_variables:
+        if labels_to_cols[variable] in cat_cols:
+            default_cat_variables.append(variable)
+        elif labels_to_cols[variable] in metric_cols:
+            default_metric_variables.append(variable)
+        
+    cat_variable_selector = st.multiselect('Select categorical variables', options=cat_variables, default=default_cat_variables, key='cat_variable_selector'+key)
+    metric_variable_selector = st.multiselect('Select metric variables', options=metric_variables, default=default_metric_variables, key='metric_variable_selector'+key) 
+        
+    variable_selector = cat_variable_selector + metric_variable_selector
+    return cat_variables,metric_variables,filter_conditions,filter_summary,cat_variable_selector,metric_variable_selector
+
+def indiv_selection(df, selector, key):
+    st.write('##### Select Individual')
+        
+    indiv_options = df.explode(selector)[selector].unique()
+        
+    lef, righ = st.columns((0.2, 0.8))
+        
+    indiv_selector = lef.selectbox('Select Individual', options=indiv_options, key='indiv_selector'+key)
+        
+    movie_options = df.explode(selector).loc[df[selector] == indiv_selector, 'movie_title']
+        
+    indiv_movie_selector = righ.multiselect('Select Movies', options=movie_options, default=movie_options, key='individual_movie_selector'+key)
+    
+    return indiv_movie_selector, indiv_selector
+
+def indiv_filter_func(df, selector, agg_dict, labels_to_cols, filter_conditions, sort_var_selector, sort_by_selector, agg_func, metrics_col_selector, cat_col_selector, cols_to_labels, indiv_selector, config_cols):
+    if len(filter_conditions) != 0:
+        combined_filter = pd.concat(filter_conditions, axis=1).all(axis=1)
+    else:
+        combined_filter =  slice(None)
+    
+    if 'movie_title' in cat_col_selector:
+        cat_col_selector.remove('movie_title')
+        cat_col_selector.insert(0, 'movie_title')
+    else:
+        cat_col_selector.insert(0, 'movie_title')
+    
+    metrics_col_selector.insert(0, 'movie_title')
+    metrics_col_selector.remove(selector)
+    cat_col_selector.remove(selector)
+    
+    df_metrics = df.loc[combined_filter, metrics_col_selector].sort_values(labels_to_cols[sort_var_selector], ascending=sort_by_selector)
+    
+    df_categories = df.loc[combined_filter, cat_col_selector]
+    
+    metrics_col_selector.remove('movie_title')
+    df = pd.merge(df_metrics, df_categories, on='movie_title')
+    df_summary = df[metrics_col_selector].apply(lambda x: x.agg(agg_dict), axis=0)
+    df_summary.insert(loc=0, column='Aggregation', value = agg_dict.keys())
+    st.write('#### Exploring ' + indiv_selector)
+    if df.shape[0] > 1:
+        st.dataframe(width=None, data=df_summary, hide_index=True, column_config=config_cols, use_container_width=True, height=get_auto_height(df_summary))
+    return df, df_summary
 
 def get_auto_height(df):
     auto_height = (df.shape[0] + 1) * 35 + 3
     return auto_height
+
+def filter_widget(df, variables, default_variables, selector, key, cols_to_labels, agg_dict, multiselect_var, labels_to_cols, unroll_multiselect_var, cat_cols, metric_cols, range_var, data_options, type, data_select):
+    
+    # Select Data
+    
+    one, two = st.columns(2)
+    
+    one.write('###### Select Data to Analyze')
+    
+    data_select_options = []
+    
+    for item in data_select:
+        data_select_options.append(data_options[item])
+    
+    data_selector = two.selectbox('Select Data to show', options=data_options.values(), index=0, key='data_selector'+key)
+    
+    # Start Expander
+    
+    with st.expander('🔧 Select Filters', expanded=False):
+        
+        # Breakdown: Individual Selection
+        
+        if type == 'breakdown':
+            indiv_movie_selector, indiv_selector = indiv_selection(df, selector, key)
+        # Comparison: Individual Selection
+        # elif type == 'comparison'
+        #
+        else:
+            indiv_selector = False
+            indiv_movie_selector = False
+        
+        # Variable selection
+        
+        cat_variables, metric_variables, filter_conditions, filter_summary, cat_variable_selector, metric_variable_selector = var_selection(variables, default_variables, cols_to_labels, labels_to_cols, cat_cols, metric_cols, key)
+        
+        if type == 'breakdown':
+            filter_conditions.append(df['movie_title'].isin(indiv_movie_selector))
+            filter_conditions.append(df[selector] == indiv_selector)
+        
+        #if data_selector == 'Movie Data' :
+            
+        
+        
+        # Display selection
+        sort_var_selector, sort_by_selector, display_selector, agg_func, metrics_col_selector, cat_col_selector = display_selection(selector, agg_dict, labels_to_cols, cat_variable_selector, metric_variable_selector, key, type)
+        
+        # cat_filter_selection
+        cat_filter_selection(df, cols_to_labels, multiselect_var, labels_to_cols, unroll_multiselect_var, cat_variables, filter_conditions, filter_summary, key)
+        
+        metric_filter_selection(df, cols_to_labels, labels_to_cols, range_var, metric_variables, filter_conditions, filter_summary, key)
+    return indiv_selector,filter_conditions,filter_summary,sort_var_selector,sort_by_selector,display_selector,agg_func,metrics_col_selector,cat_col_selector
+
+
+def data_processor(df, variables, default_variables, selector, key, type, data_select):
+    
+    # Load dictionaries
+    config_cols, cols_to_labels, agg_dict, multiselect_var, labels_to_cols, unroll_multiselect_var, cat_cols, metric_cols, range_var, data_options = get_col_config()
+    
+    # Filter Dropdown Widget
+    indiv_selector, filter_conditions, filter_summary, sort_var_selector, sort_by_selector, display_selector, agg_func, metrics_col_selector, cat_col_selector = filter_widget(df, variables, default_variables, selector, key, cols_to_labels, agg_dict, multiselect_var, labels_to_cols, unroll_multiselect_var, cat_cols, metric_cols, range_var, data_options, type, data_select)
+    
+    # Filter results
+    
+    if type == 'breakdown':
+        df, df_summary = indiv_filter_func(df, selector, agg_dict, labels_to_cols, filter_conditions, sort_var_selector, sort_by_selector, agg_func, metrics_col_selector, cat_col_selector, cols_to_labels, indiv_selector, config_cols)
+    
+    # elif type == 'comparison'
+    # 
+    #
+    else:
+        df = agg_filter_func(df, selector, agg_dict, labels_to_cols, filter_conditions, sort_var_selector, sort_by_selector, agg_func, metrics_col_selector, cat_col_selector)
+    
+    
+    # Filter preview
+    
+    df = filter_preview(df, filter_summary, display_selector)
+    
+    # Results Table
+    
+    st.dataframe(width=None, data=df, hide_index=False, column_config=config_cols, use_container_width=True, height=get_auto_height(df))
+    
+    # Download Button
+    
+    get_csv_download(df, selector)
